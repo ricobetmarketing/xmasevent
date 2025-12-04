@@ -37,7 +37,37 @@
       position: relative;
     }
 
-    /* Removed big card look: no border, no radius, no outer box shadow */
+    /* LANGUAGE SWITCHER (top right) */
+    .lang-switcher {
+      position: fixed;
+      top: 10px;
+      right: 14px;
+      z-index: 60;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(55,65,81,0.9);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.65);
+      font-size: 11px;
+    }
+
+    .lang-switcher-label {
+      opacity: 0.8;
+    }
+
+    .lang-select {
+      background: transparent;
+      border: 0;
+      color: #e5e7eb;
+      font-family: inherit;
+      font-size: 11px;
+      outline: none;
+      cursor: pointer;
+    }
+
     .frame {
       width: 100%;
       padding: 0 16px 22px;
@@ -176,27 +206,55 @@
       gap: 8px;
     }
 
-    .countdown-chip {
+    .countdown-time {
       display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3px 8px;
-      border-radius: 999px;
-      background: rgba(15,23,42,0.85);
-      border: 1px solid rgba(191,219,254,0.7);
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: #bfdbfe;
-      white-space: nowrap;
+      gap: 6px;
     }
 
-    .countdown-time {
-      font-size: 24px;
+    .countdown-segment {
+      min-width: 54px;
+      padding: 4px 6px 5px;
+      border-radius: 12px;
+      background: radial-gradient(circle at 50% 0, rgba(15,23,42,0.9), transparent 120%);
+      border: 1px solid rgba(191,219,254,0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 16px rgba(59,130,246,0.65);
+      animation: countdownGlow 1.8s ease-in-out infinite;
+    }
+
+    .segment-value {
+      font-size: 20px;
       font-weight: 800;
       color: #bbf7d0;
       text-shadow: 0 0 12px rgba(74,222,128,0.9);
       letter-spacing: 0.06em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .segment-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #dbeafe;
+      opacity: 0.85;
+    }
+
+    @keyframes countdownGlow {
+      0% {
+        transform: translateY(0);
+        box-shadow: 0 0 12px rgba(59,130,246,0.65);
+      }
+      50% {
+        transform: translateY(-1px);
+        box-shadow: 0 0 18px rgba(59,130,246,0.95);
+      }
+      100% {
+        transform: translateY(0);
+        box-shadow: 0 0 12px rgba(59,130,246,0.65);
+      }
     }
 
     .countdown-meta {
@@ -206,323 +264,429 @@
     }
 
     @media (max-width: 480px) {
-      .countdown-time {
-        font-size: 21px;
+      .segment-value {
+        font-size: 18px;
+      }
+      .countdown-segment {
+        min-width: 50px;
       }
     }
 
- /* LEADERBOARD CARD – glassy neon */
-.leaderboard-card {
-  margin-top: 4px;
-  padding: 16px 16px 14px;
-  border-radius: 24px;
-  background:
-    radial-gradient(circle at 0 0, rgba(148,163,184,0.35), transparent 60%),
-    radial-gradient(circle at 100% 100%, rgba(45,212,191,0.28), transparent 65%),
-    rgba(15,23,42,0.96);
-  border: 1px solid rgba(148,163,184,0.5);
-  box-shadow:
-    0 18px 40px rgba(15,23,42,0.95),
-    0 0 0 1px rgba(15,23,42,0.9) inset;
-  position: relative;
-  overflow: hidden;
-}
+    /* LEADERBOARD CARD */
+    .leaderboard-card {
+      margin-top: 4px;
+      padding: 14px 14px 12px;
+      border-radius: 22px;
+      background:
+        radial-gradient(circle at 0 0, rgba(148,163,184,0.25), transparent 60%),
+        #020617;
+      border: 1px solid rgba(31,41,55,0.9);
+      box-shadow: 0 16px 32px rgba(15,23,42,0.85);
+    }
 
-.leaderboard-card::before {
-  content: "";
-  position: absolute;
-  inset: -40%;
-  background:
-    radial-gradient(circle at 0 0, rgba(248,250,252,0.06), transparent 55%),
-    radial-gradient(circle at 100% 0, rgba(59,130,246,0.16), transparent 60%);
-  pointer-events: none;
-  opacity: 0.9;
-}
+    .leaderboard-top {
+      margin-bottom: 6px;
+    }
 
-/* top filter area stays similar, just extra spacing */
-.leaderboard-top {
-  margin-bottom: 10px;
-}
+    .filter-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 6px;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-/* Podium – top 3, more “stage” look */
-.podium-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  align-items: flex-end;
-  margin-bottom: 14px;
-}
+    .filter-row-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      min-width: 0;
+    }
 
-.podium-item {
-  border-radius: 20px;
-  padding: 10px 8px 12px;
-  text-align: center;
-  position: relative;
-  font-size: 12px;
-  background:
-    linear-gradient(145deg, rgba(15,23,42,0.95), rgba(15,23,42,0.6));
-  border: 1px solid rgba(148,163,184,0.85);
-  box-shadow:
-    0 12px 26px rgba(15,23,42,0.9),
-    0 0 0 1px rgba(15,23,42,0.9) inset;
-  overflow: hidden;
-}
+    .filter-row input[type="date"] {
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+      color: #f9fafb;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 7px 10px;
+      outline: none;
+    }
 
-.podium-item::after {
-  /* glowing “platform” under each player */
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 6px;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 6px;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(248,250,252,0.4), transparent 70%);
-  opacity: 0.75;
-}
+    .filter-row input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
 
-.podium-item.rank-1 {
-  background:
-    linear-gradient(145deg, #facc15, #fb7185);
-  color: #1e1307;
-  transform: translateY(-10px);
-  box-shadow:
-    0 18px 40px rgba(0,0,0,0.9),
-    0 0 20px rgba(250,204,21,0.7);
-}
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+      align-items: center;
+    }
 
-.podium-item.rank-2 {
-  background:
-    linear-gradient(145deg, #e5e7eb, #9ca3af);
-  box-shadow: 0 14px 32px rgba(15,23,42,0.9);
-}
+    .search-row input[type="text"] {
+      flex: 1 1 220px;
+      border-radius: 999px;
+      border: 1px solid rgba(55,65,81,0.9);
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.8), transparent 65%);
+      color: #f9fafb;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 7px 11px;
+      outline: none;
+    }
 
-.podium-item.rank-3 {
-  background:
-    linear-gradient(145deg, #fed7aa, #fb923c);
-  box-shadow: 0 14px 32px rgba(15,23,42,0.9);
-}
+    .search-row input::placeholder {
+      color: #6b7280;
+    }
 
-.podium-rank {
-  position: absolute;
-  top: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-radius: 999px;
-  padding: 2px 11px;
-  font-size: 11px;
-  background: rgba(0,0,0,0.78);
-  color: #fef9c3;
-  border: 1px solid rgba(255,255,255,0.8);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
+    .search-row button {
+      border-radius: 999px;
+      border: 0;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(34,197,94,0.75);
+      white-space: nowrap;
+    }
 
-.podium-trophy {
-  font-size: 15px;
-}
+    /* 2-HOUR LEADERBOARD TIMER – left side */
+    .lb-top-timer {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 3px;
+      font-size: 10px;
+      min-width: 130px;
+    }
 
-.podium-avatar {
-  width: 48px;
-  height: 48px;
-  margin: 22px auto 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 18px;
-  overflow: hidden;
-  border: 2px solid rgba(255,255,255,0.9);
-  background: #020617;
-  /* hexagon-ish look */
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-}
+    .lb-top-label {
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
 
-.podium-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .lb-top-time {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(59,130,246,0.9);
+      background: rgba(15,23,42,0.98);
+      font-weight: 700;
+      font-size: 11px;
+      color: #bfdbfe;
+      font-variant-numeric: tabular-nums;
+    }
 
-.podium-name {
-  font-size: 13px;
-  font-weight: 800;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+    @media (max-width: 640px) {
+      .filter-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .lb-top-timer {
+        align-items: flex-start;
+      }
+    }
 
-.podium-turnover {
-  font-size: 11px;
-  margin-top: 2px;
-  opacity: 0.9;
-}
+    .lb-desc {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
 
-.podium-prize {
-  font-size: 11px;
-  margin-top: 4px;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 999px;
-  display: inline-block;
-  background: rgba(15,23,42,0.75);
-  border: 1px solid rgba(248,250,252,0.4);
-}
+    .search-result {
+      font-size: 11px;
+      color: #9ca3af;
+      min-height: 16px;
+      margin-top: 2px;
+    }
 
-/* LIST HEADER – subtle separator */
-.list-header {
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1.7fr) minmax(0, 1fr);
-  gap: 6px;
-  font-size: 10px;
-  color: #9ca3af;
-  margin: 4px 0 6px;
-  padding: 0 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-}
+    .search-result strong {
+      color: #bae6fd;
+    }
 
-/* SCROLLABLE LIST – glassy container */
-.ranking-list {
-  max-height: 360px;
-  overflow-y: auto;
-  border-radius: 18px;
-  background:
-    linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.82));
-  border: 1px solid rgba(31,41,55,0.9);
-  box-shadow: inset 0 0 0 1px rgba(15,23,42,0.9);
-}
+    /* search result card for outside Top20 */
+    .search-result-card {
+      margin-top: 4px;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 0 0, rgba(56,189,248,0.4), transparent 70%),
+        #020617;
+      border: 1px solid rgba(56,189,248,0.9);
+      box-shadow: 0 12px 24px rgba(56,189,248,0.9);
+      animation: resultPulse 1.6s ease-in-out infinite;
+    }
 
-@media (max-width: 640px) {
-  .ranking-list {
-    max-height: 260px;
-  }
-}
+    .search-result-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-/* ROWS – “player card” look */
-.ranking-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 44px minmax(0, 1.7fr) minmax(0, 1fr);
-  gap: 6px;
-  align-items: center;
-  padding: 7px 10px;
-  font-size: 11px;
-  background: radial-gradient(circle at 0 0, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
-  border-bottom: 1px solid rgba(15,23,42,0.9);
-  transition:
-    background 0.15s ease,
-    transform 0.15s ease,
-    box-shadow 0.15s ease;
-}
+    .search-result-rank-badge {
+      min-width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(15,23,42,0.95), transparent 65%);
+      border: 1px solid rgba(191,219,254,0.9);
+      font-weight: 700;
+      font-size: 12px;
+      color: #e0f2fe;
+    }
 
-/* neon strip on the left of each row */
-.ranking-row::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 6px;
-  bottom: 6px;
-  width: 3px;
-  border-radius: 0 999px 999px 0;
-  background: linear-gradient(180deg, #38bdf8, #22c55e);
-  opacity: 0.35;
-}
+    .search-result-name {
+      font-weight: 700;
+    }
 
-.ranking-row:nth-child(even) {
-  background: radial-gradient(circle at 100% 0, rgba(15,23,42,0.9), #020617);
-}
+    .search-result-meta {
+      font-size: 11px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
 
-.ranking-row:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(15,23,42,0.85);
-  background: radial-gradient(circle at 50% 0, rgba(59,130,246,0.26), #020617);
-}
+    .search-result-extra {
+      font-size: 10px;
+      margin-top: 4px;
+      color: #e0f2fe;
+      opacity: 0.9;
+    }
 
-/* highlight from search */
-.ranking-row.highlight {
-  box-shadow:
-    0 0 0 1px rgba(56,189,248,0.9),
-    0 12px 30px rgba(56,189,248,0.7);
-  z-index: 1;
-}
+    @keyframes resultPulse {
+      0% {
+        transform: translateY(0);
+        box-shadow: 0 10px 20px rgba(56,189,248,0.8);
+      }
+      50% {
+        transform: translateY(-1px);
+        box-shadow: 0 14px 28px rgba(56,189,248,1);
+      }
+      100% {
+        transform: translateY(0);
+        box-shadow: 0 10px 20px rgba(56,189,248,0.8);
+      }
+    }
 
-.rank-badge {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 12px;
-  color: #0f172a;
-  background: radial-gradient(circle at 30% 0, #fef9c3, #f9735b);
-  box-shadow:
-    0 0 0 2px rgba(15,23,42,1),
-    0 0 20px rgba(248,250,252,0.35);
-}
+    .leaderboard-body {
+      margin-top: 8px;
+    }
 
-/* top 10 get brighter medals */
-.ranking-row:nth-child(-n+7) .rank-badge {
-  background: radial-gradient(circle at 30% 0, #fef08a, #f97316);
-}
+    /* Podium – top 3 */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: flex-end;
+      margin-bottom: 10px;
+    }
 
-.rank-main {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  overflow: hidden;
-}
+    .podium-item {
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 0, rgba(148,163,184,0.45), transparent 70%),
+        #020617;
+      border: 1px solid rgba(55,65,81,0.9);
+      padding: 8px 6px 10px;
+      text-align: center;
+      position: relative;
+      font-size: 12px;
+    }
 
-.rank-avatar {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  border: 1px solid rgba(148,163,184,0.9);
-  background: #020617;
-  /* subtle hexagon style */
-  clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
-}
+    .podium-item.rank-1 {
+      background: linear-gradient(180deg, #facc15, #fb7185);
+      color: #1e1307;
+      transform: translateY(-8px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.9);
+    }
 
-.rank-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+    .podium-rank {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 11px;
+      background: rgba(0,0,0,0.72);
+      color: #fef9c3;
+      border: 1px solid rgba(255,255,255,0.8);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
 
-.rank-name {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 600;
-}
+    .podium-item.rank-1 .podium-rank {
+      background: rgba(0,0,0,0.8);
+    }
 
-/* Prize pill */
-.rank-prize {
-  text-align: right;
-  font-weight: 700;
-  font-size: 11px;
-  display: inline-flex;
-  justify-content: flex-end;
-}
+    .podium-trophy {
+      font-size: 14px;
+    }
 
-.rank-prize::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 999px;
-  margin-right: 6px;
-  background: radial-gradient(circle, #22c55e, #16a34a);
-  box-shadow: 0 0 8px rgba(34,197,94,0.8);
-}
+    .podium-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      margin: 20px auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.9);
+      background: #020617;
+    }
 
+    .podium-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .podium-avatar span {
+      font-size: 22px;
+    }
+
+    .podium-name {
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .podium-turnover {
+      font-size: 12px;
+      margin-top: 2px;
+      opacity: 0.9;
+    }
+
+    .podium-prize {
+      font-size: 12px;
+      margin-top: 2px;
+      font-weight: 700;
+    }
+
+    /* LIST HEADER – Rank, Username, Turnover, Prize */
+    .list-header {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1.6fr) minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 6px;
+      font-size: 10px;
+      color: #9ca3af;
+      margin: 6px 0;
+      padding: 0 7px;
+    }
+
+    .ranking-list {
+      max-height: 360px;
+      overflow-y: auto;
+      border-radius: 14px;
+      background:
+        radial-gradient(circle at 0 0, rgba(15,23,42,0.85), transparent 70%),
+        #020617;
+      border: 1px solid rgba(31,41,55,0.9);
+    }
+
+    @media (max-width: 640px) {
+      .ranking-list {
+        max-height: 260px;
+      }
+    }
+
+    .ranking-row {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1.6fr) minmax(0, 1.1fr) minmax(0, 0.9fr);
+      gap: 6px;
+      align-items: center;
+      padding: 6px 7px;
+      font-size: 11px;
+      background: rgba(15,23,42,0.96);
+      border-bottom: 1px solid #020617;
+    }
+
+    .ranking-row:nth-child(even) {
+      background: #030712;
+    }
+
+    .ranking-row.highlight {
+      border: 1px solid #38bdf8;
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,0.9),
+        0 10px 24px rgba(56,189,248,0.9);
+      position: relative;
+      z-index: 1;
+    }
+
+    .rank-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(148,163,184,0.8);
+      background: radial-gradient(circle, rgba(255,255,255,0.15), transparent 60%);
+      font-weight: 700;
+    }
+
+    .rank-main {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+    }
+
+    .rank-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.9);
+      background: #020617;
+    }
+
+    .rank-avatar img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .rank-avatar span {
+      font-size: 16px;
+    }
+
+    .rank-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+    }
+
+    .rank-turnover {
+      text-align: right;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+      color: #e5e7eb;
+    }
+
+    .rank-prize {
+      text-align: right;
+      font-weight: 600;
+      font-size: 11px;
+    }
 
     /* CTAS */
     .turnover-ctas {
@@ -788,6 +952,15 @@
   </style>
 </head>
 <body>
+  <div class="lang-switcher">
+    <span class="lang-switcher-label">🌐</span>
+    <select id="langSelect" class="lang-select">
+      <option value="en">EN</option>
+      <option value="pt">PT-BR</option>
+      <option value="es">ES</option>
+    </select>
+  </div>
+
   <div class="page">
     <div class="frame">
       <div class="inner">
@@ -808,11 +981,23 @@
                 Next rewards payout in
               </div>
               <div class="countdown-time-wrapper">
-                <span class="countdown-chip">Rewards • UTC-6</span>
-                <span class="countdown-time" id="nextRewardTime">--:--:--</span>
+                <div class="countdown-time" id="nextRewardTime">
+                  <div class="countdown-segment">
+                    <span class="segment-value" data-unit="hours">--</span>
+                    <span class="segment-label" data-i18n="countdownHours">HRS</span>
+                  </div>
+                  <div class="countdown-segment">
+                    <span class="segment-value" data-unit="minutes">--</span>
+                    <span class="segment-label" data-i18n="countdownMinutes">MIN</span>
+                  </div>
+                  <div class="countdown-segment">
+                    <span class="segment-value" data-unit="seconds">--</span>
+                    <span class="segment-label" data-i18n="countdownSeconds">SEC</span>
+                  </div>
+                </div>
               </div>
               <div class="countdown-meta" data-i18n="countdownMeta1">
-                Timer based on Mexico time (UTC-6). Turnover after cut-off counts for next day.
+                Timer resets daily at 01:00 Mexico time. Turnover after cut-off counts for next day.
               </div>
             </div>
           </div>
@@ -822,13 +1007,14 @@
         <section class="leaderboard-card">
           <div class="leaderboard-top">
             <div class="filter-row">
-              <div class="filter-row-left">
-                <input id="searchDate" type="date" aria-label="Search date (December)" />
-              </div>
-              <!-- 30-MIN UPDATE TIMER -->
+              <!-- 2-hour UPDATE TIMER (left) -->
               <div class="lb-top-timer">
                 <span class="lb-top-label">Next board update in</span>
-                <span class="lb-top-time" id="lbCountdown">30:00</span>
+                <span class="lb-top-time" id="lbCountdown">02:00</span>
+              </div>
+
+              <div class="filter-row-left">
+                <input id="searchDate" type="date" aria-label="Search date (December)" />
               </div>
             </div>
 
@@ -840,12 +1026,17 @@
             <div class="search-result" id="searchResult"></div>
           </div>
 
+          <div class="lb-desc" data-i18n="lbDesc">
+            Ranking is based on players&apos; daily turnover in USD and is updated every 2 hours.
+          </div>
+
           <div class="leaderboard-body">
             <div class="podium-grid" id="podiumGrid"></div>
 
             <div class="list-header">
               <span>Rank</span>
               <span>Username</span>
+              <span>Turnover</span>
               <span>Prize</span>
             </div>
             <div class="ranking-list" id="rankingList"></div>
@@ -919,7 +1110,7 @@
               <div class="faq-answer" data-i18n-html="faqA2">
                 <p>Rewards are processed once per day, after the daily session ends.</p>
                 <ul>
-                  <li>Payout time: <strong>01:00 Mexico time (UTC-6)</strong>.</li>
+                  <li>Payout time: <strong>01:00 Mexico time</strong>.</li>
                   <li>The top timer shows the remaining time until the next payout.</li>
                   <li>Any turnover after the cut-off will be counted for the next day.</li>
                 </ul>
@@ -938,8 +1129,7 @@
                 <p>The leaderboard pulls data from your Google Sheet on a fixed interval.</p>
                 <ul>
                   <li>
-                    Front-end countdown: every <strong>30 minutes</strong> (on :00 and :30 each
-                    hour).
+                    Front-end countdown: every <strong>2 hours</strong> throughout the day.
                   </li>
                   <li>
                     The timer beside the search date bar shows when the next update is expected.
@@ -979,7 +1169,7 @@
               <div class="faq-answer" data-i18n-html="faqA5">
                 <p>
                   This page can show different languages based on player location (BR Portuguese, MX
-                  Spanish, English for others).
+                  Spanish, English for others). Players may also switch language manually.
                 </p>
                 <ul>
                   <li>We detect your country via a Geo-IP service.</li>
@@ -1029,7 +1219,7 @@
     }
     createSnowflakes();
 
-    /* ========== DAILY PAYOUT COUNTDOWN (UTC-6) ========== */
+    /* ========== DAILY PAYOUT COUNTDOWN (UTC-6 logic, no text mention) ========== */
     const nextRewardTimeEl = document.getElementById("nextRewardTime");
 
     function getNextMexicoPayoutUtcMs(nowUtcMs) {
@@ -1060,38 +1250,48 @@
       const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, "0");
       const m = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, "0");
       const s = String(Math.floor((diff / 1000) % 60)).padStart(2, "0");
-      nextRewardTimeEl.textContent = `${h}:${m}:${s}`;
+
+      const hEl = nextRewardTimeEl.querySelector('[data-unit="hours"]');
+      const mEl = nextRewardTimeEl.querySelector('[data-unit="minutes"]');
+      const sEl = nextRewardTimeEl.querySelector('[data-unit="seconds"]');
+      if (hEl) hEl.textContent = h;
+      if (mEl) mEl.textContent = m;
+      if (sEl) sEl.textContent = s;
     }
 
     updatePayoutCountdown();
     setInterval(updatePayoutCountdown, 1000);
 
-    /* ========== LEADERBOARD UPDATE COUNTDOWN – FIXED :00 / :30 ========== */
+    /* ========== LEADERBOARD UPDATE COUNTDOWN – EVERY 2 HOURS (UTC-6) ========== */
     const lbCountdownEl = document.getElementById("lbCountdown");
 
-    function getNextHalfHourTimeMs() {
-      const now = new Date();
-      const next = new Date(now);
-      next.setSeconds(0, 0);
-      const mins = now.getMinutes();
-      if (mins < 30) {
-        next.setMinutes(30);
-      } else {
-        next.setMinutes(0);
-        next.setHours(next.getHours() + 1);
-      }
-      return next.getTime();
+    function getNextBoardUpdateUtcMs() {
+      const nowUtcMs = Date.now();
+      const offsetMs = -6 * 60 * 60 * 1000; // Mexico UTC-6
+      const mexNow = new Date(nowUtcMs + offsetMs);
+
+      const minutesSinceMidnight =
+        mexNow.getHours() * 60 + mexNow.getMinutes() + mexNow.getSeconds() / 60;
+      const slotMinutes = 120; // 2 hours
+      const nextSlotIndex = Math.floor(minutesSinceMidnight / slotMinutes) + 1;
+      const nextSlotMinutes = nextSlotIndex * slotMinutes;
+
+      const mexTarget = new Date(mexNow);
+      mexTarget.setHours(0, 0, 0, 0);
+      mexTarget.setMinutes(nextSlotMinutes); // can overflow into next day
+
+      return mexTarget.getTime() - offsetMs;
     }
 
-    let nextLbUpdateTime = getNextHalfHourTimeMs();
+    let nextLbUpdateUtcMs = getNextBoardUpdateUtcMs();
 
     function updateLbCountdown() {
       if (!lbCountdownEl) return;
-      const now = Date.now();
-      let diff = nextLbUpdateTime - now;
+      const nowUtcMs = Date.now();
+      let diff = nextLbUpdateUtcMs - nowUtcMs;
       if (diff <= 0) {
-        nextLbUpdateTime = getNextHalfHourTimeMs();
-        diff = nextLbUpdateTime - Date.now();
+        nextLbUpdateUtcMs = getNextBoardUpdateUtcMs();
+        diff = nextLbUpdateUtcMs - Date.now();
       }
       const totalSeconds = Math.floor(diff / 1000);
       const mins = Math.floor(totalSeconds / 60);
@@ -1209,7 +1409,7 @@
         });
       }
 
-      /* List – ranks 4–20 (only Rank / Username / Prize) */
+      /* List – ranks 4–20 (Rank / Username / Turnover / Prize) */
       if (rankingList) {
         rowsForDate
           .filter((r) => Number(r.rank) >= 4 && Number(r.rank) <= 20)
@@ -1225,6 +1425,7 @@
                 <div class="rank-avatar">${flagInner(player.flagUrl)}</div>
                 <div class="rank-name">${player.username}</div>
               </div>
+              <div class="rank-turnover">${shortNum(player.turnover)} USD</div>
               <div class="rank-prize">${prize}</div>
             `;
             rankingList.appendChild(row);
@@ -1396,21 +1597,20 @@
       }
 
       const rankPrize = prizeForRank(result.rank);
-      const baseText =
-        "<strong>" +
-        result.username +
-        "</strong> is currently <strong># " +
-        result.rank +
-        "</strong> on <strong>" +
-        displayDate +
-        "</strong>.";
-
-      const turnoverText =
-        " Turnover: <strong>" + shortNum(result.turnover) + "</strong> USD.";
-      const prizeText =
-        " Prize for this rank: <strong>" + rankPrize + "</strong>.";
-
       if (result.inTop20) {
+        const baseText =
+          "<strong>" +
+          result.username +
+          "</strong> is currently <strong># " +
+          result.rank +
+          "</strong> on <strong>" +
+          displayDate +
+          "</strong>.";
+        const turnoverText =
+          " Turnover: <strong>" + shortNum(result.turnover) + "</strong> USD.";
+        const prizeText =
+          " Prize for this rank: <strong>" + rankPrize + "</strong>.";
+
         searchResult.innerHTML = baseText + prizeText + turnoverText;
 
         // highlight if in list (ranks 4–20, since 1–3 are in podium)
@@ -1426,13 +1626,23 @@
           }
         }
       } else {
-        searchResult.innerHTML =
-          baseText +
-          " (outside Top 20 list)." +
-          (rankPrize !== "-"
-            ? " Potential prize: <strong>" + rankPrize + "</strong>."
-            : "") +
-          turnoverText;
+        // Outside Top 20 – show bigger card with username + rank + turnover, plus small message
+        searchResult.innerHTML = `
+          <div class="search-result-card">
+            <div class="search-result-main">
+              <div class="search-result-rank-badge">#${result.rank}</div>
+              <div>
+                <div class="search-result-name">${result.username}</div>
+                <div class="search-result-meta">
+                  ${displayDate} • Turnover: <strong>${shortNum(result.turnover)} USD</strong>
+                </div>
+              </div>
+            </div>
+            <div class="search-result-extra">
+              Outside Top 20. Keep playing to climb the board and improve your position!
+            </div>
+          </div>
+        `;
       }
     }
 
@@ -1486,16 +1696,22 @@
       });
     });
 
-    /* ========== MULTI-LANGUAGE VIA IP (BR / MX / OTHERS) ========== */
+    /* ========== MULTI-LANGUAGE VIA IP + MANUAL SWITCH ========== */
+    let currentLang = "en";
+
     const translations = {
       en: {
         heroTitle: "Daily Turnover Challenge",
         heroSub: "Challenge and win up to USD100 every day this December!",
         countdownLabel1: "Next rewards payout in",
-        countdownMeta1: "Countdown timer based on UTC-6.",
+        countdownMeta1: "Timer resets daily at 01:00 Mexico time. Turnover after cut-off counts for next day.",
+        countdownHours: "HRS",
+        countdownMinutes: "MIN",
+        countdownSeconds: "SEC",
         searchBtn: "Find",
         btnPlay: "Start Playing",
         btnHow: "How it works / T&C",
+        lbDesc: "Ranking is based on players' daily turnover in USD and is updated every 2 hours.",
         faqTitle: "Turnover Challenge – T&C & FAQ",
         faqSub:
           "Tap on each point to expand. Edit this copy to match your final terms.",
@@ -1515,7 +1731,7 @@
         faqA2: `
           <p> Rewards are processed once per day, after the daily session ends. </p>
           <ul>
-            <li>Payout time: <strong>01:00 Mexico time (UTC-6)</strong>.</li>
+            <li>Payout time: <strong>01:00 Mexico time</strong>.</li>
             <li>The top timer shows the remaining time until the next payout.</li>
             <li>Any turnover after the cut-off will be counted for the next day.</li>
           </ul>
@@ -1523,7 +1739,7 @@
         faqA3: `
           <p> The leaderboard pulls data from your Google Sheet on a fixed interval. </p>
           <ul>
-            <li>Front-end countdown: every <strong>30 minutes</strong> (on :00 and :30 each hour).</li>
+            <li>Front-end countdown: every <strong>2 hours</strong> throughout the day.</li>
             <li>The timer beside the search date bar shows when the next update is expected.</li>
             <li>Any manual changes in the Sheet will reflect after the next update cycle.</li>
           </ul>
@@ -1538,7 +1754,7 @@
           </ul>
         `,
         faqA5: `
-          <p> This page can show different languages based on player location (BR Portuguese, MX Spanish, English for others). </p>
+          <p> This page can show different languages based on player location (BR Portuguese, MX Spanish, English for others). Players may also switch language manually. </p>
           <ul>
             <li>We detect your country via a Geo-IP service.</li>
             <li>Brazil → Brazilian Portuguese, Mexico → Spanish, others → English.</li>
@@ -1550,10 +1766,14 @@
         heroTitle: "Desafio Diário de Turnover",
         heroSub: "Participe e ganhe até USD100 todos os dias em dezembro!",
         countdownLabel1: "Próximo pagamento de prêmios em",
-        countdownMeta1: "Cronômetro baseado em UTC-6.",
+        countdownMeta1: "O relógio zera diariamente às 01:00 horário do México. Turnover após o corte conta para o dia seguinte.",
+        countdownHours: "HRS",
+        countdownMinutes: "MIN",
+        countdownSeconds: "SEG",
         searchBtn: "Procurar",
         btnPlay: "Começar a jogar",
         btnHow: "Como funciona / T&C",
+        lbDesc: "O ranking é baseado no turnover diário em USD e é atualizado a cada 2 horas.",
         faqTitle: "Desafio de Turnover – Termos & FAQ",
         faqSub:
           "Toque em cada ponto para expandir. Edite este texto para combinar com seus termos oficiais.",
@@ -1573,7 +1793,7 @@
         faqA2: `
           <p> Os prêmios são processados uma vez por dia, após o encerramento da sessão diária. </p>
           <ul>
-            <li>Horário de pagamento: <strong>01:00 horário do México (UTC-6)</strong>.</li>
+            <li>Horário de pagamento: <strong>01:00 horário do México</strong>.</li>
             <li>O contador no topo mostra o tempo restante até o próximo pagamento.</li>
             <li>Qualquer turnover após o horário limite conta para o dia seguinte.</li>
           </ul>
@@ -1581,7 +1801,7 @@
         faqA3: `
           <p> O ranking busca os dados da sua planilha do Google em um intervalo fixo. </p>
           <ul>
-            <li>Contagem no front-end: a cada <strong>30 minutos</strong> (:00 e :30 de cada hora).</li>
+            <li>Contagem no front-end: a cada <strong>2 horas</strong> ao longo do dia.</li>
             <li>O timer ao lado da barra de busca mostra quando a próxima atualização é esperada.</li>
             <li>Alterações manuais na planilha aparecem após o próximo ciclo de atualização.</li>
           </ul>
@@ -1596,7 +1816,7 @@
           </ul>
         `,
         faqA5: `
-          <p> Esta página pode mostrar idiomas diferentes com base na localização do jogador (português BR, espanhol MX, inglês para outros). </p>
+          <p> Esta página pode mostrar idiomas diferentes com base na localização do jogador (português BR, espanhol MX, inglês para outros). Os jogadores também podem trocar o idioma manualmente. </p>
           <ul>
             <li>Detectamos o país através de um serviço de Geo-IP.</li>
             <li>Brasil → português BR, México → espanhol, outros → inglês.</li>
@@ -1608,10 +1828,14 @@
         heroTitle: "Reto Diario de Turnover",
         heroSub: "¡Participa y gana hasta USD100 cada día en diciembre!",
         countdownLabel1: "Próximo pago de premios en",
-        countdownMeta1: "Contador basado en UTC-6.",
+        countdownMeta1: "El contador se reinicia cada día a las 01:00 hora de México. El turnover después del corte cuenta para el día siguiente.",
+        countdownHours: "HRS",
+        countdownMinutes: "MIN",
+        countdownSeconds: "SEG",
         searchBtn: "Buscar",
         btnPlay: "Empezar a jugar",
         btnHow: "Cómo funciona / T&C",
+        lbDesc: "El ranking se basa en el turnover diario en USD y se actualiza cada 2 horas.",
         faqTitle: "Reto de Turnover – Términos & FAQ",
         faqSub:
           "Toca cada punto para expandir. Edita este texto según tus términos oficiales.",
@@ -1631,7 +1855,7 @@
         faqA2: `
           <p> Las recompensas se procesan una vez al día, después de terminar la sesión diaria. </p>
           <ul>
-            <li>Hora de pago: <strong>01:00 hora de México (UTC-6)</strong>.</li>
+            <li>Hora de pago: <strong>01:00 hora de México</strong>.</li>
             <li>El contador superior muestra el tiempo restante hasta el próximo pago.</li>
             <li>Cualquier turnover después del corte se contará para el día siguiente.</li>
           </ul>
@@ -1639,7 +1863,7 @@
         faqA3: `
           <p> El ranking obtiene datos de tu hoja de Google en un intervalo fijo. </p>
           <ul>
-            <li>Cuenta regresiva en el front-end: cada <strong>30 minutos</strong> (:00 y :30 de cada hora).</li>
+            <li>Cuenta regresiva en el front-end: cada <strong>2 horas</strong> durante el día.</li>
             <li>El temporizador junto a la barra de búsqueda muestra cuándo será la siguiente actualización.</li>
             <li>Los cambios manuales en la hoja aparecerán después del siguiente ciclo.</li>
           </ul>
@@ -1654,7 +1878,7 @@
           </ul>
         `,
         faqA5: `
-          <p> Esta página puede mostrar distintos idiomas según la ubicación del jugador (portugués BR, español MX, inglés para otros). </p>
+          <p> Esta página puede mostrar distintos idiomas según la ubicación del jugador (portugués BR, español MX, inglés para otros). Los jugadores también pueden cambiar el idioma manualmente. </p>
           <ul>
             <li>Detectamos tu país con un servicio de Geo-IP.</li>
             <li>Brasil → portugués BR, México → español, otros → inglés.</li>
@@ -1664,9 +1888,15 @@
       },
     };
 
+    const langSelect = document.getElementById("langSelect");
+
     function applyLanguage(lang) {
       const dict = translations[lang] || translations.en;
+      currentLang = lang;
       document.documentElement.setAttribute("data-lang", lang);
+      if (langSelect && langSelect.value !== lang) {
+        langSelect.value = lang;
+      }
       document.querySelectorAll("[data-i18n]").forEach((el) => {
         const key = el.getAttribute("data-i18n");
         if (dict[key]) {
@@ -1678,6 +1908,13 @@
         if (dict[key]) {
           el.innerHTML = dict[key];
         }
+      });
+    }
+
+    if (langSelect) {
+      langSelect.addEventListener("change", (e) => {
+        const value = e.target.value || "en";
+        applyLanguage(value);
       });
     }
 

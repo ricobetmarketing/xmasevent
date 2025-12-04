@@ -291,7 +291,7 @@
     .filter-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 12px;
       margin-bottom: 6px;
       align-items: center;
       justify-content: space-between;
@@ -359,9 +359,10 @@
 
     /* 2-HOUR LEADERBOARD TIMER – left side */
     .lb-top-timer {
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: flex-end;
       gap: 3px;
       font-size: 10px;
       min-width: 130px;
@@ -1006,17 +1007,16 @@
         <!-- LEADERBOARD -->
         <section class="leaderboard-card">
           <div class="leaderboard-top">
-            <div class="filter-row">
-              <!-- 2-hour UPDATE TIMER (left) -->
-              <div class="lb-top-timer">
-                <span class="lb-top-label">Next board update in</span>
-                <span class="lb-top-time" id="lbCountdown">02:00</span>
-              </div>
+<div class="filter-row">
+    <div class="filter-row-left">
+        <input id="searchDate" type="date" />
+    </div>
 
-              <div class="filter-row-left">
-                <input id="searchDate" type="date" aria-label="Search date (December)" />
-              </div>
-            </div>
+    <div class="lb-top-timer">
+        <span class="lb-top-label">Next board update in</span>
+        <span class="lb-top-time" id="lbCountdown">02:00</span>
+    </div>
+</div>
 
             <div class="search-row">
               <input id="searchInput" type="text" placeholder="Search your username…" />

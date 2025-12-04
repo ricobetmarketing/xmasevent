@@ -183,14 +183,16 @@
       pointer-events: none;
     }
 
-    .countdown-inner {
-      position: relative;
-      z-index: 1;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
+ .countdown-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;      /* center contents horizontally */
+  text-align: center;       /* center text labels */
+}
 
     .countdown-label {
       font-size: 10px;
@@ -199,12 +201,12 @@
       color: #cbd5f5;
       opacity: 0.95;
     }
-
-    .countdown-time-wrapper {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
+.countdown-time-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;  /* make the 3 boxes sit in the middle */
+}
 
     .countdown-time {
       display: inline-flex;
@@ -257,11 +259,12 @@
       }
     }
 
-    .countdown-meta {
-      font-size: 11px;
-      color: #e5e7eb;
-      opacity: 0.8;
-    }
+.countdown-meta {
+  font-size: 11px;
+  color: #e5e7eb;
+  opacity: 0.8;
+  text-align: center;       /* center the description line */
+}
 
     @media (max-width: 480px) {
       .segment-value {
@@ -288,33 +291,34 @@
       margin-bottom: 6px;
     }
 
-    .filter-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 6px;
-      align-items: center;
-      justify-content: space-between;
-    }
+.filter-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;  /* date left, timer right */
+  gap: 8px;
+  flex-wrap: nowrap;               /* NEVER wrap onto 2nd line */
+}
 
-    .filter-row-left {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex: 0 0 auto;
-      min-width: 0;
-    }
+.filter-row-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1 1 auto;                  /* allow it to shrink on small screens */
+  min-width: 0;
+}
 
-    .filter-row input[type="date"] {
-      border-radius: 999px;
-      border: 1px solid rgba(55,65,81,0.9);
-      background: #020617;
-      color: #f9fafb;
-      font-family: inherit;
-      font-size: 12px;
-      padding: 7px 10px;
-      outline: none;
-    }
+.filter-row input[type="date"] {
+  border-radius: 999px;
+  border: 1px solid rgba(55,65,81,0.9);
+  background: #020617;
+  color: #f9fafb;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 7px 10px;
+  outline: none;
+  width: 100%;
+  max-width: 160px;                /* keep date small enough so timer fits */
+}
 
     .filter-row input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1);
@@ -358,42 +362,43 @@
     }
 
     /* 2-HOUR LEADERBOARD TIMER – left side */
-    .lb-top-timer {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 3px;
-      font-size: 10px;
-      min-width: 130px;
-    }
+.lb-top-timer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  font-size: 10px;
+  min-width: 110px;                /* just enough space for mm:ss */
+}
 
-    .lb-top-label {
-      color: #9ca3af;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
+.lb-top-label {
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
 
-    .lb-top-time {
-      padding: 4px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(59,130,246,0.9);
-      background: rgba(15,23,42,0.98);
-      font-weight: 700;
-      font-size: 11px;
-      color: #bfdbfe;
-      font-variant-numeric: tabular-nums;
-    }
+.lb-top-time {
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(59,130,246,0.9);
+  background: rgba(15,23,42,0.98);
+  font-weight: 700;
+  font-size: 11px;
+  color: #bfdbfe;
+  font-variant-numeric: tabular-nums;
+}
+    
+@media (max-width: 480px) {
+  .filter-row {
+    gap: 6px;
+  }
+  .lb-top-timer {
+    font-size: 9px;
+    min-width: 96px;
+  }
+}
 
-    @media (max-width: 640px) {
-      .filter-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .lb-top-timer {
-        align-items: flex-start;
-      }
-    }
 
     .lb-desc {
       font-size: 11px;
@@ -1008,15 +1013,16 @@
         <section class="leaderboard-card">
           <div class="leaderboard-top">
 <div class="filter-row">
-    <div class="filter-row-left">
-        <input id="searchDate" type="date" />
-    </div>
+  <div class="filter-row-left">
+    <input id="searchDate" type="date" />
+  </div>
 
-    <div class="lb-top-timer">
-        <span class="lb-top-label">Next board update in</span>
-        <span class="lb-top-time" id="lbCountdown">02:00</span>
-    </div>
+  <div class="lb-top-timer">
+    <span class="lb-top-label">Next board update in</span>
+    <span class="lb-top-time" id="lbCountdown">02:00</span>
+  </div>
 </div>
+
 
             <div class="search-row">
               <input id="searchInput" type="text" placeholder="Search your username…" />

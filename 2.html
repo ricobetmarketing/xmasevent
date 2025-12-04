@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Daily Turnover Challenge – Casino Board Style</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --felt-green: #064e3b;
+      --felt-deep: #022c22;
+      --gold: #fbbf24;
+      --gold-soft: #facc15;
+      --muted: #9ca3af;
+      --accent-red: #f9735b;
+      --accent-green: #22c55e;
+      --accent-blue: #38bdf8;
+      --shadow-hard: 0 24px 60px rgba(0, 0, 0, 0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Baloo 2", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 15px;
+      color: #f9fafb;
+      background:
+        radial-gradient(circle at 10% 0, rgba(34,197,94,0.35), transparent 45%),
+        radial-gradient(circle at 90% 100%, rgba(56,189,248,0.35), transparent 45%),
+        radial-gradient(circle at 50% 50%, #064e3b 0%, #022c22 55%, #000000 100%);
+      padding: 12px 0 32px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 12px;
+      position: relative;
+    }
+
+    /* TOP BAR / HEADER */
+    .top-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .title-main {
+      font-size: 22px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #fef9c3;
+      text-shadow: 0 0 12px rgba(250, 204, 21, 0.9);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .title-pill {
+      border-radius: 999px;
+      border: 1px solid rgba(250,204,21,0.7);
+      padding: 2px 9px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #fef9c3;
+      background: linear-gradient(135deg, rgba(250,204,21,0.3), rgba(15,23,42,0.9));
+    }
+
+    .title-sub {
+      font-size: 12px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .brand-chip {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      padding: 5px 10px;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.9), rgba(15,23,42,0.7));
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+    }
+
+    .brand-chip span.icon {
+      font-size: 16px;
+    }
+
+    /* MAIN LAYOUT – header area + leaderboard */
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1.2fr);
+      gap: 16px;
+      align-items: stretch;
+      margin-bottom: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    /* HERO “TABLE” BANNER */
+    .hero-table {
+      position: relative;
+      border-radius: 26px;
+      padding: 12px;
+      background:
+        radial-gradient(circle at 50% -20%, rgba(248,250,252,0.35), transparent 65%),
+        radial-gradient(circle at 0 100%, rgba(22,163,74,0.62), transparent 65%),
+        #022c22;
+      box-shadow: var(--shadow-hard);
+      border: 1px solid rgba(0,0,0,0.85);
+      overflow: hidden;
+    }
+
+    .hero-table::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 22px;
+      border: 2px solid rgba(251,191,36,0.8);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.9),
+        0 0 24px rgba(250,204,21,0.5);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 10px;
+    }
+
+    .hero-banner-wrap {
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(15,23,42,0.9);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
+    }
+
+    .hero-banner {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .hero-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 11px;
+      color: #f9fafb;
+    }
+
+    .hero-footer-left {
+      max-width: 70%;
+    }
+
+    .hero-footer-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #bbf7d0;
+    }
+
+    .chip-small {
+      padding: 2px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.9);
+      white-space: nowrap;
+    }
+
+    /* COUNTDOWN COLUMN / SIDE HUD */
+    .side-hud {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      border-radius: 24px;
+      padding: 12px 14px;
+      background:
+        radial-gradient(circle at 0 0, rgba(15,23,42,0.95), rgba(15,23,42,0.9));
+      border: 1px solid rgba(15,23,42,0.95);
+      box-shadow: var(--shadow-hard);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 0 0, rgba(248,250,252,0.22), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(56,189,248,0.22), transparent 60%);
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .card-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .countdown-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: #e5e7eb;
+      margin-bottom: 4px;
+    }
+
+    .countdown-main {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .countdown-circle {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      border: 2px solid rgba(250,204,21,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow:
+        0 0 0 1px rgba(15,23,42,1),
+        0 0 18px rgba(250,204,21,0.6);
+      background:
+        radial-gradient(circle at 30% 0, rgba(254,249,195,0.6), transparent 60%),
+        radial-gradient(circle at 50% 120%, rgba(22,163,74,0.9), rgba(15,23,42,1));
+      font-weight: 800;
+      font-size: 16px;
+      color: #022c22;
+    }
+
+    .countdown-labels {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+    }
+
+    .countdown-meta {
+      font-size: 10px;
+      color: #d1d5db;
+      opacity: 0.9;
+    }
+
+    .chip-timezone {
+      align-self: flex-start;
+      border-radius: 999px;
+      padding: 2px 8px;
+      font-size: 10px;
+      border: 1px solid rgba(148,163,184,0.7);
+      background: rgba(15,23,42,0.94);
+      color: #bfdbfe;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .sub-card-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    .sub-label {
+      font-size: 10px;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
+    .sub-value-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .pill-strong {
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, rgba(34,197,94,0.3), rgba(15,23,42,0.95));
+      border: 1px solid rgba(34,197,94,0.7);
+      font-weight: 700;
+      font-size: 11px;
+      color: #bbf7d0;
+      white-space: nowrap;
+    }
+
+    .pill-soft {
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(148,163,184,0.6);
+      font-size: 10px;
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    /* LEADERBOARD MAIN CARD – CASINO BOARD STYLE */
+    .leaderboard-shell {
+      border-radius: 28px;
+      padding: 12px 14px 16px;
+      background:
+        radial-gradient(circle at 50% -30%, rgba(248,250,252,0.14), transparent 55%),
+        radial-gradient(circle at 0 100%, rgba(21,128,61,0.95), transparent 60%),
+        #022c22;
+      box-shadow: var(--shadow-hard);
+      border: 2px solid rgba(0,0,0,0.95);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .leaderboard-shell::before {
+      content: "";
+      position: absolute;
+      inset: 6px;
+      border-radius: 22px;
+      border: 2px solid rgba(250,204,21,0.85);
+      box-shadow:
+        0 0 0 1px rgba(0,0,0,0.9),
+        0 0 32px rgba(250,204,21,0.6);
+      pointer-events: none;
+    }
+
+    .leaderboard-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .leaderboard-top-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .filter-group label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .filter-group input[type="date"] {
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,0.95);
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.9), rgba(15,23,42,0.95));
+      color: #f9fafb;
+      font-family: inherit;
+      font-size: 11px;
+      padding: 6px 10px;
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(148,163,184,0.5);
+    }
+
+    .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+    }
+
+    .lb-countdown-chip {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 3px;
+      font-size: 10px;
+      text-align: right;
+    }
+
+    .lb-countdown-label {
+      color: #e5e7eb;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.85;
+    }
+
+    .lb-countdown-time {
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(59,130,246,0.9);
+      background: rgba(15,23,42,0.96);
+      font-weight: 700;
+      font-size: 11px;
+      color: #bfdbfe;
+      box-shadow: 0 0 16px rgba(37,99,235,0.6);
+    }
+
+    @media (max-width: 640px) {
+      .lb-countdown-chip {
+        align-items: flex-start;
+      }
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+
+    .search-row input[type="text"] {
+      flex: 1 1 220px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,0.9);
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.9), rgba(15,23,42,0.96));
+      color: #f9fafb;
+      font-family: inherit;
+      font-size: 12px;
+      padding: 7px 11px;
+      outline: none;
+      box-shadow: 0 0 0 1px rgba(148,163,184,0.6);
+    }
+
+    .search-row input::placeholder {
+      color: #6b7280;
+    }
+
+    .search-row button {
+      border-radius: 999px;
+      border: 0;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: #022c22;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(22,163,74,0.8);
+      white-space: nowrap;
+    }
+
+    .search-result {
+      font-size: 11px;
+      color: #e5e7eb;
+      min-height: 18px;
+    }
+
+    .search-result strong {
+      color: #fef9c3;
+    }
+
+    /* PODIUM */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      align-items: flex-end;
+      margin: 10px 0 14px;
+    }
+
+    @media (max-width: 640px) {
+      .podium-grid {
+        gap: 8px;
+      }
+    }
+
+    .podium-item {
+      border-radius: 20px;
+      padding: 10px 8px 12px;
+      text-align: center;
+      position: relative;
+      font-size: 12px;
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.95), rgba(15,23,42,0.75));
+      border: 1px solid rgba(15,23,42,0.95);
+      box-shadow:
+        0 14px 32px rgba(0,0,0,0.9),
+        0 0 0 1px rgba(22,101,52,0.8) inset;
+      overflow: hidden;
+    }
+
+    .podium-item::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: 4px;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 6px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(252,211,77,0.7), transparent 70%);
+      opacity: 0.7;
+    }
+
+    .podium-item.rank-1 {
+      background:
+        linear-gradient(145deg, #facc15, #f97316);
+      color: #1f1300;
+      transform: translateY(-10px);
+      box-shadow:
+        0 18px 46px rgba(0,0,0,0.95),
+        0 0 26px rgba(250,204,21,0.9);
+    }
+
+    .podium-item.rank-2 {
+      background:
+        linear-gradient(145deg, #e5e7eb, #9ca3af);
+      color: #020617;
+      transform: translateY(-4px);
+    }
+
+    .podium-item.rank-3 {
+      background:
+        linear-gradient(145deg, #fed7aa, #fb923c);
+      color: #1f1300;
+      transform: translateY(-2px);
+    }
+
+    .podium-rank {
+      position: absolute;
+      top: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      padding: 2px 12px;
+      font-size: 11px;
+      background: rgba(0,0,0,0.78);
+      color: #fef9c3;
+      border: 1px solid rgba(255,255,255,0.85);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .podium-trophy {
+      font-size: 15px;
+    }
+
+    .podium-avatar {
+      width: 50px;
+      height: 50px;
+      margin: 22px auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.9);
+      background: #020617;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+
+    .podium-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .podium-name {
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .podium-turnover {
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    .podium-prize {
+      font-size: 11px;
+      margin-top: 4px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      display: inline-block;
+      background: rgba(15,23,42,0.8);
+      border: 1px solid rgba(248,250,252,0.5);
+    }
+
+    /* LIST HEADER */
+    .list-header {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 6px;
+      font-size: 10px;
+      color: #e5e7eb;
+      margin: 2px 0 6px;
+      padding: 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* RANKING LIST CONTAINER */
+    .ranking-list {
+      max-height: 360px;
+      overflow-y: auto;
+      border-radius: 18px;
+      background:
+        linear-gradient(145deg, rgba(15,23,42,0.96), rgba(15,23,42,0.9));
+      border: 1px solid rgba(0,0,0,0.9);
+      box-shadow: inset 0 0 0 1px rgba(34,197,94,0.4);
+    }
+
+    @media (max-width: 640px) {
+      .ranking-list {
+        max-height: 260px;
+      }
+    }
+
+    .ranking-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 6px;
+      align-items: center;
+      padding: 7px 10px;
+      font-size: 11px;
+      background: radial-gradient(circle at 0 0, rgba(6,78,59,0.9), rgba(15,23,42,0.96));
+      border-bottom: 1px solid rgba(0,0,0,0.9);
+      transition:
+        background 0.15s ease,
+        transform 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .ranking-row::before {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 5px;
+      bottom: 5px;
+      width: 3px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #22c55e, #38bdf8);
+      opacity: 0.45;
+    }
+
+    .ranking-row:nth-child(even) {
+      background: radial-gradient(circle at 100% 0, rgba(6,95,70,0.9), #020617);
+    }
+
+    .ranking-row:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.8);
+      background: radial-gradient(circle at 50% 0, rgba(59,130,246,0.3), #020617);
+    }
+
+    .ranking-row.highlight {
+      box-shadow:
+        0 0 0 1px rgba(56,189,248,0.95),
+        0 12px 30px rgba(56,189,248,0.7);
+      z-index: 1;
+    }
+
+    .rank-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 12px;
+      color: #022c22;
+      background: radial-gradient(circle at 30% 0, #fef9c3, #f9735b);
+      box-shadow:
+        0 0 0 2px rgba(0,0,0,1),
+        0 0 16px rgba(248,250,252,0.5);
+      margin-left: 8px;
+    }
+
+    .ranking-row:nth-child(-n+7) .rank-badge {
+      background: radial-gradient(circle at 30% 0, #fef08a, #f97316);
+    }
+
+    .rank-main {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      overflow: hidden;
+    }
+
+    .rank-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid rgba(148,163,184,0.9);
+      background: #020617;
+      clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+    }
+
+    .rank-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .rank-name-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .rank-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 600;
+      font-size: 11px;
+    }
+
+    .rank-region {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #a7f3d0;
+      opacity: 0.9;
+    }
+
+    .rank-prize {
+      text-align: right;
+      font-weight: 700;
+      font-size: 11px;
+      display: inline-flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .rank-prize-pill {
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 0 0, rgba(34,197,94,0.75), rgba(5,46,22,0.98));
+      border: 1px solid rgba(22,163,74,0.9);
+      color: #ecfdf5;
+      font-size: 11px;
+      box-shadow: 0 0 14px rgba(34,197,94,0.7);
+    }
+
+    .rank-prize-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3af;
+    }
+
+    /* CTAS */
+    .cta-row {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .cta-row button {
+      border-radius: 999px;
+      border: 0;
+      padding: 9px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-play {
+      background:
+        radial-gradient(circle at 30% 0, #fee2e2, #fecaca),
+        radial-gradient(circle at 50% 120%, #ef4444, #7f1d1d);
+      color: #450a0a;
+      box-shadow:
+        0 0 0 2px rgba(0,0,0,1),
+        0 18px 40px rgba(185,28,28,0.85);
+      position: relative;
+    }
+
+    .btn-play::after {
+      content: "";
+      position: absolute;
+      inset: -6px;
+      border-radius: 999px;
+      border: 1px dashed rgba(254,226,226,0.55);
+      opacity: 0.9;
+    }
+
+    .btn-how {
+      background: radial-gradient(circle at 0 0, rgba(15,23,42,0.95), rgba(15,23,42,0.95));
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.9);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.9);
+    }
+
+    /* FAQ MODAL */
+    .faq-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.96);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .faq-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .faq-modal-inner {
+      width: 100%;
+      max-width: 720px;
+      max-height: 80vh;
+      border-radius: 20px;
+      background: #020617;
+      border: 1px solid rgba(55,65,81,0.9);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .faq-modal-header {
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(55,65,81,0.9);
+      background: #020617;
+    }
+
+    .faq-modal-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .faq-modal-sub {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .faq-modal-close {
+      border-radius: 999px;
+      border: 0;
+      padding: 5px 10px;
+      font-size: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.9);
+    }
+
+    .faq-modal-body {
+      padding: 10px 14px 12px;
+      overflow-y: auto;
+      background: #020617;
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    .faq-section {
+      margin-top: 4px;
+    }
+
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .faq-item {
+      border-radius: 14px;
+      background: #020617;
+      border: 1px solid rgba(55,65,81,0.9);
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: #f9fafb;
+      padding: 9px 11px;
+      font-family: inherit;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .faq-question-text {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .faq-question-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      background: rgba(248,113,113,0.15);
+      border: 1px solid rgba(248,113,113,0.5);
+      font-size: 11px;
+    }
+
+    .faq-icon {
+      font-size: 16px;
+      color: #9ca3af;
+      transition: transform 0.15s ease;
+    }
+
+    .faq-item.open .faq-icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 11px;
+      font-size: 12px;
+      color: #d1d5db;
+      transition: max-height 0.2s ease, padding-bottom 0.2s ease;
+    }
+
+    .faq-item.open .faq-answer {
+      padding-bottom: 9px;
+      max-height: 260px;
+    }
+
+    .faq-answer p {
+      margin: 6px 0;
+    }
+
+    .faq-answer ul {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      font-size: 12px;
+    }
+
+    /* SNOW */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #e5f0ff;
+      font-size: 9px;
+      opacity: 0.6;
+      pointer-events: none;
+      z-index: 5;
+      animation-name: snowFall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+    }
+
+    @keyframes snowFall {
+      0% {
+        transform: translateY(-10px);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(110vh);
+        opacity: 0;
+      }
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%) translateY(10px);
+      background:
+        radial-gradient(circle at 0 0, rgba(255,255,255,0.15), transparent 55%),
+        linear-gradient(135deg, #22c55e, #16a34a);
+      color: #022c22;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.7);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease, transform 0.15s ease;
+      z-index: 50;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #020617;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #4b5563;
+      border-radius: 999px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9ca3af;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <!-- SNOW (visual only) -->
+    <!-- Snowflakes injected by JS -->
+
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <div class="title-block">
+        <div class="title-main">
+          <span>Daily Turnover Challenge</span>
+          <span class="title-pill">BR &amp; MX COMBINED BOARD</span>
+        </div>
+        <div class="title-sub">
+          Track the live leaderboard and see if you’ve made the cut for today’s prizes.
+        </div>
+      </div>
+      <div class="brand-chip">
+        <span class="icon">🎰</span>
+        <span>Live Casino Event • December</span>
+      </div>
+    </header>
+
+    <!-- HEADER LAYOUT (banner + side HUD) -->
+    <section class="layout">
+      <!-- Banner / Table -->
+      <div class="hero-table">
+        <div class="hero-inner">
+          <div class="hero-banner-wrap">
+            <img
+              src="https://ricobr.ft-crm.com/media-api/serve/7f955edc-2fa5-4a08-af64-91361b314f6f_Turnover_Challenge.png"
+              alt="Daily Turnover Challenge"
+              class="hero-banner"
+            />
+          </div>
+          <div class="hero-footer">
+            <div class="hero-footer-left">
+              💡 Place real-money bets on selected products. Every spin adds to your daily turnover ranking.
+            </div>
+            <div class="hero-footer-right">
+              <span class="chip-small">Top 20 share USD prizes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Side HUD: payout countdown + next board update + quick stats -->
+      <div class="side-hud">
+        <div class="card">
+          <div class="card-inner">
+            <div class="countdown-title">Next Rewards Payout</div>
+            <div class="countdown-main">
+              <div class="countdown-circle" id="nextRewardTime">
+                --:--:--
+              </div>
+              <div class="countdown-labels">
+                <div>Daily payout processed after the game day ends.</div>
+                <div class="countdown-meta">
+                  Turnover after cut-off will count towards the next day’s leaderboard.
+                </div>
+                <div class="chip-timezone">Based on Mexico Time (UTC-6)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-inner sub-card-row">
+            <div>
+              <div class="sub-label">Leaderboard update</div>
+              <div class="sub-value-row">
+                <span class="pill-strong">
+                  Next board refresh in <span id="lbCountdown">30:00</span>
+                </span>
+                <span class="pill-soft">Auto sync every :00 &amp; :30</span>
+              </div>
+            </div>
+            <div>
+              <div class="sub-label">Today’s session</div>
+              <div class="sub-value-row">
+                <span class="pill-soft">
+                  Check if your name is already on the board.
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD CASINO BOARD -->
+    <section class="leaderboard-shell">
+      <div class="leaderboard-inner">
+        <div class="leaderboard-top-row">
+          <div class="filter-group">
+            <label for="searchDate">Leaderboard Date</label>
+            <input id="searchDate" type="date" />
+          </div>
+          <div class="lb-countdown-chip">
+            <span class="lb-countdown-label">Next board update</span>
+            <span class="lb-countdown-time" id="lbCountdownTop">30:00</span>
+          </div>
+        </div>
+
+        <div class="search-row">
+          <input id="searchInput" type="text" placeholder="Search your username on this date…" />
+          <button id="searchBtn">Find</button>
+        </div>
+        <div class="search-result" id="searchResult"></div>
+
+        <!-- Podium -->
+        <div class="podium-grid" id="podiumGrid"></div>
+
+        <!-- List -->
+        <div class="list-header">
+          <span>Rank</span>
+          <span>Player</span>
+          <span>Prize</span>
+        </div>
+        <div class="ranking-list" id="rankingList"></div>
+
+        <!-- CTAs -->
+        <div class="cta-row">
+          <button class="btn-play" id="startPlayingBtn">
+            🎮 Start Playing Now
+          </button>
+          <button class="btn-how" id="howWorksBtn">
+            ❓ How it works / T&amp;C
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- FAQ MODAL -->
+  <div class="faq-modal" id="faqModal">
+    <div class="faq-modal-inner">
+      <div class="faq-modal-header">
+        <div>
+          <div class="faq-modal-title">
+            Turnover Challenge – Terms &amp; FAQ
+          </div>
+          <div class="faq-modal-sub">
+            Please customise this section to match your final promotion terms.
+          </div>
+        </div>
+        <button class="faq-modal-close" id="faqCloseBtn">
+          ✕ <span>Close</span>
+        </button>
+      </div>
+
+      <div class="faq-modal-body">
+        <section class="faq-section">
+          <div class="faq-list">
+            <article class="faq-item open">
+              <button class="faq-question">
+                <div class="faq-question-text">
+                  <span class="faq-question-index">1</span>
+                  <span>How does the combined BR &amp; MX leaderboard work?</span>
+                </div>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  All eligible turnover from Brazilian and Mexican players is converted to USD based on the rate you configure in the Google Sheet.
+                </p>
+                <ul>
+                  <li>🇧🇷 BR players appear with a Brazil flag.</li>
+                  <li>🇲🇽 MX players appear with a Mexico flag.</li>
+                  <li>Ranking is based on total USD turnover within the campaign period.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="faq-item">
+              <button class="faq-question">
+                <div class="faq-question-text">
+                  <span class="faq-question-index">2</span>
+                  <span>When is the rewards payout done?</span>
+                </div>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <p>Rewards are processed once per day, after the daily session ends.</p>
+                <ul>
+                  <li>Payout time (example): <strong>01:00 Mexico time (UTC-6)</strong>.</li>
+                  <li>The countdown on this page shows how long until the next payout.</li>
+                  <li>Turnover after the cut-off is counted for the next calendar day.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="faq-item">
+              <button class="faq-question">
+                <div class="faq-question-text">
+                  <span class="faq-question-index">3</span>
+                  <span>How often is the leaderboard updated?</span>
+                </div>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <p>The leaderboard pulls from your Google Sheet on a fixed interval.</p>
+                <ul>
+                  <li>Front-end display refresh target: every <strong>30 minutes</strong>.</li>
+                  <li>The “Next board update” timer shows the upcoming sync.</li>
+                  <li>Manual changes in the Sheet will display after the next update.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="faq-item">
+              <button class="faq-question">
+                <div class="faq-question-text">
+                  <span class="faq-question-index">4</span>
+                  <span>Basic eligibility &amp; general rules</span>
+                </div>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <p>Replace the bullet points below with your official promotion rules.</p>
+                <ul>
+                  <li>Promotion period: e.g. 1–31 December.</li>
+                  <li>Only real-money bets on selected products are counted.</li>
+                  <li>Duplicate, fraudulent or abusive accounts may be disqualified.</li>
+                  <li>Standard site-wide terms &amp; conditions apply.</li>
+                </ul>
+              </div>
+            </article>
+
+            <article class="faq-item">
+              <button class="faq-question">
+                <div class="faq-question-text">
+                  <span class="faq-question-index">5</span>
+                  <span>Languages &amp; localisation</span>
+                </div>
+                <span class="faq-icon">+</span>
+              </button>
+              <div class="faq-answer">
+                <p>
+                  This board is visual only. You can duplicate this HTML and translate the text for BR Portuguese, MX Spanish or English as needed.
+                </p>
+                <ul>
+                  <li>Host different language versions under separate URLs, or</li>
+                  <li>Inject text dynamically based on your own geo-IP or language rules.</li>
+                </ul>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast">Done!</div>
+
+  <script>
+    /* ========== CONFIG FOR GOOGLE SHEET ========== */
+    const GOOGLE_SHEET_ID = "1pnHNbmUETs4Mve_jVGENUiY8PEoaKWkc988tOdt3RA8";
+    const SHEET_NAME = "Leaderboard";
+    const SHEET_URL =
+      "https://docs.google.com/spreadsheets/d/" +
+      GOOGLE_SHEET_ID +
+      "/gviz/tq?tqx=out:json&sheet=" +
+      encodeURIComponent(SHEET_NAME);
+
+    /* BR / MX FLAG MAPPING
+       Put "BR" or "MX" in the Flag column in Sheet.
+       Any other value is treated as direct image URL. */
+    const BR_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/f6b3499e-2692-4d6e-b86d-58d1c55b6d5f_brazil.png";
+    const MX_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/b132c7fc-2f90-4bda-82de-78223c5c3725_mexico.png";
+
+    /* ========== SNOW ========== */
+    function createSnowflakes(count = 40) {
+      for (let i = 0; i < count; i++) {
+        const el = document.createElement("div");
+        el.className = "snowflake";
+        el.textContent = "✻";
+        const left = Math.random() * 100;
+        const duration = 8 + Math.random() * 8;
+        const delay = Math.random() * -duration;
+        const size = 7 + Math.random() * 6;
+        el.style.left = left + "vw";
+        el.style.fontSize = size + "px";
+        el.style.animationDuration = duration + "s";
+        el.style.animationDelay = delay + "s";
+        document.body.appendChild(el);
+      }
+    }
+    createSnowflakes();
+
+    /* ========== DAILY PAYOUT COUNTDOWN (UTC-6) ========== */
+    const nextRewardTimeEl = document.getElementById("nextRewardTime");
+
+    function getNextMexicoPayoutUtcMs(nowUtcMs) {
+      const offsetMs = -6 * 60 * 60 * 1000; // UTC-6
+      const mexNow = new Date(nowUtcMs + offsetMs);
+      let target = new Date(
+        mexNow.getFullYear(),
+        mexNow.getMonth(),
+        mexNow.getDate(),
+        1,
+        0,
+        0,
+        0
+      );
+      if (target <= mexNow) {
+        target.setDate(target.getDate() + 1);
+      }
+      return target.getTime() - offsetMs;
+    }
+
+    function updatePayoutCountdown() {
+      if (!nextRewardTimeEl) return;
+      const now = new Date();
+      const nowUtcMs = now.getTime();
+      const targetUtcMs = getNextMexicoPayoutUtcMs(nowUtcMs);
+      let diff = targetUtcMs - nowUtcMs;
+      if (diff <= 0) diff = 0;
+      const h = String(Math.floor(diff / (1000 * 60 * 60))).padStart(2, "0");
+      const m = String(Math.floor((diff / (1000 * 60)) % 60)).padStart(2, "0");
+      const s = String(Math.floor((diff / 1000) % 60)).padStart(2, "0");
+      nextRewardTimeEl.textContent = `${h}:${m}:${s}`;
+    }
+
+    updatePayoutCountdown();
+    setInterval(updatePayoutCountdown, 1000);
+
+    /* ========== LEADERBOARD UPDATE COUNTDOWN – FIXED :00 / :30 ========== */
+    const lbCountdownEl = document.getElementById("lbCountdown");
+    const lbCountdownTopEl = document.getElementById("lbCountdownTop");
+
+    function getNextHalfHourTimeMs() {
+      const now = new Date();
+      const next = new Date(now);
+      next.setSeconds(0, 0);
+      const mins = now.getMinutes();
+      if (mins < 30) {
+        next.setMinutes(30);
+      } else {
+        next.setMinutes(0);
+        next.setHours(next.getHours() + 1);
+      }
+      return next.getTime();
+    }
+
+    let nextLbUpdateTime = getNextHalfHourTimeMs();
+
+    function updateLbCountdown() {
+      const now = Date.now();
+      let diff = nextLbUpdateTime - now;
+      if (diff <= 0) {
+        nextLbUpdateTime = getNextHalfHourTimeMs();
+        diff = nextLbUpdateTime - Date.now();
+      }
+      const totalSeconds = Math.floor(diff / 1000);
+      const mins = Math.floor(totalSeconds / 60);
+      const secs = totalSeconds % 60;
+      const text =
+        String(mins).padStart(2, "0") + ":" + String(secs).padStart(2, "0");
+      if (lbCountdownEl) lbCountdownEl.textContent = text;
+      if (lbCountdownTopEl) lbCountdownTopEl.textContent = text;
+    }
+
+    updateLbCountdown();
+    setInterval(updateLbCountdown, 1000);
+
+    /* ========== TOAST ========== */
+    const toastEl = document.getElementById("toast");
+    function showToast(msg) {
+      if (!toastEl) return;
+      toastEl.textContent = msg;
+      toastEl.classList.add("show");
+      setTimeout(() => toastEl.classList.remove("show"), 1800);
+    }
+
+    /* ========== GOOGLE SHEET → LEADERBOARD DATA ========== */
+    const podiumGrid = document.getElementById("podiumGrid");
+    const rankingList = document.getElementById("rankingList");
+    const searchInput = document.getElementById("searchInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const searchResult = document.getElementById("searchResult");
+    const searchDateInput = document.getElementById("searchDate");
+
+    let allRows = [];
+
+    function shortNum(n) {
+      const num = Number(n) || 0;
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+      if (num >= 1_000) return (num / 1_000).toFixed(1) + "K";
+      return num.toString();
+    }
+
+    function prizeForRank(rank) {
+      const r = Number(rank);
+      if (r === 1) return "$100";
+      if (r === 2) return "$70";
+      if (r === 3) return "$50";
+      if (r === 4) return "$45";
+      if (r === 5) return "$40";
+      if (r === 6) return "$30";
+      if (r === 7) return "$25";
+      if (r === 8) return "$20";
+      if (r === 9) return "$15";
+      if (r === 10) return "$10";
+      if (r >= 11 && r <= 20) return "$5";
+      return "-";
+    }
+
+    function flagInner(flagUrl) {
+      if (flagUrl) {
+        const safe = String(flagUrl).replace(/"/g, "&quot;");
+        return `<img src="${safe}" alt="flag" />`;
+      }
+      return `<span>🌐</span>`;
+    }
+
+    function regionLabelFromFlagUrl(flagUrl) {
+      if (!flagUrl) return "Region: N/A";
+      if (flagUrl === BR_FLAG_URL) return "Region: BR";
+      if (flagUrl === MX_FLAG_URL) return "Region: MX";
+      return "Region: INT";
+    }
+
+    function clearPodiumAndList() {
+      if (podiumGrid) podiumGrid.innerHTML = "";
+      if (rankingList) rankingList.innerHTML = "";
+    }
+
+    /* Convert various Google date formats -> YYYY-MM-DD */
+    function toIsoDate(raw) {
+      if (raw == null) return "";
+      if (typeof raw === "number") {
+        const base = new Date(1899, 11, 30);
+        const d = new Date(base.getTime() + raw * 86400000);
+        return d.toISOString().slice(0, 10);
+      }
+      if (typeof raw === "string") {
+        const v = raw.trim();
+        const m = v.match(/^Date\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        if (m) {
+          const year = parseInt(m[1], 10);
+          const month = parseInt(m[2], 10);
+          const day = parseInt(m[3], 10);
+          const d = new Date(year, month, day);
+          return d.toISOString().slice(0, 10);
+        }
+        const d2 = new Date(v);
+        if (!isNaN(d2)) return d2.toISOString().slice(0, 10);
+        return v;
+      }
+      return "";
+    }
+
+    function parseSheetResponse(text) {
+      const match = text.match(/\{.*\}/s);
+      if (!match) throw new Error("Invalid sheet format");
+      const json = JSON.parse(match[0]);
+      const rows = [];
+      const tableRows = json.table.rows || [];
+      tableRows.forEach((r, idx) => {
+        if (!r.c) return;
+        if (idx === 0) return; // skip header
+
+        const cellDate = r.c[0];
+        let date = "";
+        if (cellDate) {
+          const raw =
+            typeof cellDate.f !== "undefined" && cellDate.f !== null
+              ? cellDate.f
+              : cellDate.v;
+          date = toIsoDate(raw);
+        }
+
+        const rank = r.c[1]?.v;
+        const username = r.c[2]?.v ? String(r.c[2].v).trim() : "";
+        const turnover = r.c[3]?.v;
+
+        let flagCode = r.c[4]?.v ? String(r.c[4].v).trim() : "";
+        let flagUrl = "";
+        if (flagCode) {
+          const upper = flagCode.toUpperCase();
+          if (upper === "BR") flagUrl = BR_FLAG_URL;
+          else if (upper === "MX") flagUrl = MX_FLAG_URL;
+          else flagUrl = flagCode; // treat as direct URL
+        }
+
+        if (!date || !rank || !username) return;
+        rows.push({ date, rank, username, turnover, flagUrl });
+      });
+      return rows;
+    }
+
+    function renderForDate(dateStr) {
+      clearPodiumAndList();
+      if (!allRows.length) {
+        if (searchResult) {
+          searchResult.innerHTML = "Leaderboard data is not loaded yet.";
+        }
+        return;
+      }
+
+      const targetDate = dateStr || (allRows[0] && allRows[0].date);
+      if (!targetDate) return;
+
+      const rowsForDate = allRows
+        .filter((r) => r.date === targetDate)
+        .sort((a, b) => Number(a.rank) - Number(b.rank));
+
+      if (!rowsForDate.length) {
+        if (searchResult) {
+          searchResult.innerHTML =
+            'No leaderboard found for <strong>' + targetDate + "</strong>.";
+        }
+        return;
+      }
+
+      // Podium – ranks 1–3
+      if (podiumGrid) {
+        const top3 = rowsForDate.filter(
+          (r) => Number(r.rank) >= 1 && Number(r.rank) <= 3
+        );
+        const desiredOrder = [2, 1, 3]; // show #1 in middle visually
+        desiredOrder.forEach((rank) => {
+          const player = top3.find((r) => Number(r.rank) === rank);
+          if (!player) return;
+          const card = document.createElement("div");
+          card.className = "podium-item rank-" + rank;
+          const prize = prizeForRank(rank);
+          const trophyEmoji = rank === 1 ? "🏆" : rank === 2 ? "🥈" : "🥉";
+          card.innerHTML = `
+            <div class="podium-rank">
+              <span class="podium-trophy">${trophyEmoji}</span>
+              <span>#${rank}</span>
+            </div>
+            <div class="podium-avatar">${flagInner(player.flagUrl)}</div>
+            <div class="podium-name">${player.username}</div>
+            <div class="podium-turnover">${shortNum(player.turnover)} USD</div>
+            <div class="podium-prize">Prize: ${prize}</div>
+          `;
+          podiumGrid.appendChild(card);
+        });
+      }
+
+      // List – ranks 4–20
+      if (rankingList) {
+        rowsForDate
+          .filter((r) => Number(r.rank) >= 4 && Number(r.rank) <= 20)
+          .forEach((player) => {
+            const rank = Number(player.rank);
+            const row = document.createElement("div");
+            row.className = "ranking-row";
+            row.dataset.rank = rank;
+            const prize = prizeForRank(rank);
+            const regionLabel = regionLabelFromFlagUrl(player.flagUrl);
+            row.innerHTML = `
+              <div class="rank-badge">${rank}</div>
+              <div class="rank-main">
+                <div class="rank-avatar">${flagInner(player.flagUrl)}</div>
+                <div class="rank-name-wrap">
+                  <div class="rank-name">${player.username}</div>
+                  <div class="rank-region">${regionLabel}</div>
+                </div>
+              </div>
+              <div class="rank-prize">
+                <span class="rank-prize-label">Prize</span>
+                <span class="rank-prize-pill">${prize}</span>
+              </div>
+            `;
+            rankingList.appendChild(row);
+          });
+      }
+
+      if (searchResult) {
+        searchResult.innerHTML = "";
+      }
+    }
+
+    function loadSheetData(preferredDate) {
+      fetch(SHEET_URL)
+        .then((res) => res.text())
+        .then((text) => {
+          allRows = parseSheetResponse(text);
+          if (!allRows.length) {
+            showToast("No data in sheet");
+            return;
+          }
+
+          const uniqueDates = Array.from(
+            new Set(allRows.map((r) => r.date))
+          ).sort();
+          const fromPicker = (searchDateInput && searchDateInput.value) || "";
+          let target =
+            preferredDate || fromPicker || uniqueDates[uniqueDates.length - 1];
+
+          if (target && !uniqueDates.includes(target)) {
+            target = uniqueDates[uniqueDates.length - 1];
+          }
+
+          if (searchDateInput && target) {
+            searchDateInput.value = target;
+          }
+
+          renderForDate(target);
+        })
+        .catch((err) => {
+          console.error(err);
+          showToast("Error loading leaderboard");
+        });
+    }
+
+    // Pre-fill date picker with today (for UI only)
+    if (searchDateInput) {
+      const today = new Date();
+      const isoToday = today.toISOString().slice(0, 10);
+      searchDateInput.value = isoToday;
+
+      searchDateInput.addEventListener("change", () => {
+        const d = searchDateInput.value;
+        if (!d) return;
+        loadSheetData(d);
+      });
+    }
+
+    /* ========== SEARCH BY USERNAME + DATE ========== */
+    function findRankForDate(usernameRaw, dateStr) {
+      const username = usernameRaw.trim().toLowerCase();
+      if (!username) return null;
+      const dateRows = allRows.filter((r) => r.date === dateStr);
+      if (!dateRows.length) return null;
+      const userRow = dateRows.find(
+        (r) => String(r.username).toLowerCase() === username
+      );
+      if (!userRow) return null;
+      const rank = Number(userRow.rank);
+      const inTop20 = rank >= 1 && rank <= 20;
+      const turnover = userRow.turnover;
+      return { ...userRow, rank, turnover, inTop20 };
+    }
+
+    function handleSearch() {
+      if (!searchInput || !searchResult) return;
+      const q = searchInput.value;
+      const dateValue =
+        (searchDateInput && searchDateInput.value) ||
+        (allRows[0] && allRows[0].date);
+      const displayDate = dateValue || "this date";
+
+      if (!q.trim()) {
+        searchResult.textContent = "";
+        return;
+      }
+
+      if (!allRows.length) {
+        searchResult.innerHTML =
+          "Leaderboard not loaded yet. Please try again shortly.";
+        return;
+      }
+
+      const result = findRankForDate(q, displayDate);
+      if (!result) {
+        searchResult.innerHTML =
+          'No username found for <strong>' +
+          q +
+          "</strong> on <strong>" +
+          displayDate +
+          "</strong> in the leaderboard yet.";
+        return;
+      }
+
+      const rankPrize = prizeForRank(result.rank);
+      const baseText =
+        "<strong>" +
+        result.username +
+        "</strong> is currently <strong># " +
+        result.rank +
+        "</strong> on <strong>" +
+        displayDate +
+        "</strong>.";
+
+      const turnoverText =
+        " Turnover: <strong>" + shortNum(result.turnover) + "</strong> USD.";
+      const prizeText =
+        " Prize for this rank: <strong>" + rankPrize + "</strong>.";
+
+      if (result.inTop20) {
+        searchResult.innerHTML = baseText + prizeText + turnoverText;
+
+        // highlight if in list (ranks 4–20, since 1–3 are podium)
+        if (result.rank >= 4 && result.rank <= 20 && rankingList) {
+          const rows = Array.from(rankingList.children);
+          rows.forEach((r) => r.classList.remove("highlight"));
+          const row = rows.find(
+            (r) => Number(r.dataset.rank) === result.rank
+          );
+          if (row) {
+            row.classList.add("highlight");
+            row.scrollIntoView({ behavior: "smooth", block: "center" });
+          }
+        }
+      } else {
+        searchResult.innerHTML =
+          baseText +
+          " (outside Top 20 list)." +
+          (rankPrize !== "-"
+            ? " Potential prize: <strong>" + rankPrize + "</strong>."
+            : "") +
+          turnoverText;
+      }
+    }
+
+    if (searchBtn && searchInput) {
+      searchBtn.addEventListener("click", handleSearch);
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleSearch();
+      });
+    }
+
+    /* ========== CTAS & FAQ ========== */
+    const startPlayingBtn = document.getElementById("startPlayingBtn");
+    const howWorksBtn = document.getElementById("howWorksBtn");
+    const faqModal = document.getElementById("faqModal");
+    const faqCloseBtn = document.getElementById("faqCloseBtn");
+
+    if (startPlayingBtn) {
+      startPlayingBtn.addEventListener("click", () => {
+        window.open("https://www.rico.bet/", "_blank");
+      });
+    }
+
+    if (howWorksBtn && faqModal) {
+      howWorksBtn.addEventListener("click", () => {
+        faqModal.classList.add("show");
+      });
+    }
+
+    if (faqCloseBtn && faqModal) {
+      faqCloseBtn.addEventListener("click", () => {
+        faqModal.classList.remove("show");
+      });
+    }
+
+    if (faqModal) {
+      faqModal.addEventListener("click", (e) => {
+        if (e.target === faqModal) faqModal.classList.remove("show");
+      });
+    }
+
+    document.querySelectorAll(".faq-item").forEach((item) => {
+      const btn = item.querySelector(".faq-question");
+      if (!btn) return;
+      btn.addEventListener("click", () => {
+        const isOpen = item.classList.contains("open");
+        document.querySelectorAll(".faq-item").forEach((i) => {
+          if (i !== item) i.classList.remove("open");
+        });
+        if (!isOpen) item.classList.add("open");
+        else item.classList.remove("open");
+      });
+    });
+
+    /* Load sheet at the end */
+    loadSheetData();
+  </script>
+</body>
+</html>

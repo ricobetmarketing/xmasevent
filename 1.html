@@ -1223,6 +1223,10 @@
     const BR_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/f6b3499e-2692-4d6e-b86d-58d1c55b6d5f_brazil.png";
     const MX_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/b132c7fc-2f90-4bda-82de-78223c5c3725_mexico.png";
 
+    const BANNER_EN = "https://ricobr.ft-crm.com/media-api/serve/7f955edc-2fa5-4a08-af64-91361b314f6f_Turnover_Challenge.png";
+const BANNER_BR = "https://ricobr.ft-crm.com/media-api/serve/55a5d101-fd2f-4dfa-9d64-1739d55f7957_BR.png";
+const BANNER_MX = "https://ricobr.ft-crm.com/media-api/serve/b7044146-d9e1-4a40-b9d6-d31965602cd7_MX.png";
+
     /* ========== SNOW ========== */
     function createSnowflakes(count = 40) {
       for (let i = 0; i < count; i++) {
@@ -1572,6 +1576,20 @@
         loadSheetData(d);
       });
     }
+
+    
+function updateBanner(lang) {
+  const banner = document.querySelector(".hero-banner");
+  if (!banner) return;
+
+  if (lang === "pt") {
+    banner.src = BANNER_BR;
+  } else if (lang === "es") {
+    banner.src = BANNER_MX;
+  } else {
+    banner.src = BANNER_EN;
+  }
+}
 
     /* ========== SEARCH BY USERNAME + DATE ========== */
     function findRankForDate(usernameRaw, dateStr) {
@@ -1932,6 +1950,8 @@
           el.innerHTML = dict[key];
         }
       });
+      updateBanner(lang);
+
     }
 
     if (langSelect) {

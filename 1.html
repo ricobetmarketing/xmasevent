@@ -226,6 +226,25 @@
       box-shadow: 0 0 16px rgba(59,130,246,0.65);
       animation: countdownGlow 1.8s ease-in-out infinite;
     }
+/* Make payouts countdown larger */
+.countdown-time-wrapper {
+  justify-content: center;
+}
+
+.countdown-segment {
+  min-width: 72px;            /* bigger box */
+  padding: 8px 8px 10px;
+  border-radius: 16px;
+}
+
+.segment-value {
+  font-size: 26px;            /* bump number size */
+}
+
+.segment-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+}
 
     .segment-value {
       font-size: 20px;
@@ -303,22 +322,22 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  flex: 1 1 auto;                  /* allow it to shrink on small screens */
-  min-width: 0;
+  flex: 0 0 auto;
+}
+
+.filter-row-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
 }
 
 .filter-row input[type="date"] {
-  border-radius: 999px;
-  border: 1px solid rgba(55,65,81,0.9);
-  background: #020617;
-  color: #f9fafb;
-  font-family: inherit;
-  font-size: 12px;
-  padding: 7px 10px;
-  outline: none;
-  width: 100%;
-  max-width: 160px;                /* keep date small enough so timer fits */
+  width: 145px;                /* good size */
+  cursor: pointer;             /* show clickable hand */
+  background-position: right 10px center;
 }
+
 
     .filter-row input[type="date"]::-webkit-calendar-picker-indicator {
       filter: invert(1);
@@ -1003,7 +1022,7 @@
                 </div>
               </div>
               <div class="countdown-meta" data-i18n="countdownMeta1">
-                Timer resets daily at 01:00 Mexico time. Turnover after cut-off counts for next day.
+                Countdown timer based on UTC-6.
               </div>
             </div>
           </div>
@@ -1018,7 +1037,7 @@
   </div>
 
   <div class="lb-top-timer">
-    <span class="lb-top-label">Next board update in</span>
+<span class="lb-top-label">Results update in</span>
     <span class="lb-top-time" id="lbCountdown">02:00</span>
   </div>
 </div>
@@ -1032,9 +1051,7 @@
             <div class="search-result" id="searchResult"></div>
           </div>
 
-          <div class="lb-desc" data-i18n="lbDesc">
-            Ranking is based on players&apos; daily turnover in USD and is updated every 2 hours.
-          </div>
+    
 
           <div class="leaderboard-body">
             <div class="podium-grid" id="podiumGrid"></div>
@@ -1710,7 +1727,7 @@
         heroTitle: "Daily Turnover Challenge",
         heroSub: "Challenge and win up to USD100 every day this December!",
         countdownLabel1: "Next rewards payout in",
-        countdownMeta1: "Timer resets daily at 01:00 Mexico time. Turnover after cut-off counts for next day.",
+        countdownMeta1: "Countdown timer based on UTC-6.",
         countdownHours: "HRS",
         countdownMinutes: "MIN",
         countdownSeconds: "SEC",

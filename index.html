@@ -26,31 +26,23 @@
       background:
         radial-gradient(circle at 0 0, #111827 0%, #020617 55%, #000000 100%);
       color: #f9fafb;
-      padding: 24px 16px 32px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
+      padding: 12px 0 32px; /* minimal top gap */
       overflow-x: hidden;
     }
 
     .page {
       width: 100%;
       max-width: 1040px;
+      margin: 0 auto;
       position: relative;
     }
 
+    /* Removed big card look: no border, no radius, no outer box shadow */
     .frame {
       width: 100%;
-      border-radius: 32px;
-      padding: 18px 18px 22px;
-      background:
-        radial-gradient(circle at 0 0, rgba(148,163,184,0.35), transparent 65%),
-        radial-gradient(circle at 100% 100%, rgba(56,189,248,0.4), transparent 70%),
-        linear-gradient(180deg, #020617 0%, #020617 100%);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(148,163,184,0.45);
+      padding: 0 16px 22px;
       position: relative;
-      overflow: hidden;
+      overflow: visible;
       margin: 0 auto;
     }
 
@@ -123,13 +115,12 @@
       overflow: hidden;
     }
 
-.hero-banner {
-  display: block;
-  width: 100%;
-  height: auto;      /* keep image natural height ratio */
-  object-fit: contain; /* or remove this line if you want pure native behaviour */
-}
-
+    .hero-banner {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
 
     /* REWARD COUNTDOWN – more graphic */
     .countdown-card {
@@ -305,7 +296,7 @@
       white-space: nowrap;
     }
 
-    /* 30-MIN LEADERBOARD TIMER – now beside date (right) */
+    /* 30-MIN LEADERBOARD TIMER – beside date (right) */
     .lb-top-timer {
       display: flex;
       flex-direction: column;
@@ -827,7 +818,6 @@
         <!-- HEADER -->
         <header class="header">
           <div class="hero-card">
-            <!-- REPLACED TITLE + DESCRIPTION WITH BANNER IMAGE -->
             <img
               src="https://ricobr.ft-crm.com/media-api/serve/7f955edc-2fa5-4a08-af64-91361b314f6f_Turnover_Challenge.png"
               alt="Daily Turnover Challenge"
@@ -859,7 +849,7 @@
               <div class="filter-row-left">
                 <input id="searchDate" type="date" aria-label="Search date (December)" />
               </div>
-              <!-- 30-MIN UPDATE TIMER MOVED HERE -->
+              <!-- 30-MIN UPDATE TIMER -->
               <div class="lb-top-timer">
                 <span class="lb-top-label">Next board update in</span>
                 <span class="lb-top-time" id="lbCountdown">30:00</span>
@@ -1039,6 +1029,10 @@
       GOOGLE_SHEET_ID +
       "/gviz/tq?tqx=out:json&sheet=" +
       encodeURIComponent(SHEET_NAME);
+
+    /* FLAG URL MAPPING */
+    const BR_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/f6b3499e-2692-4d6e-b86d-58d1c55b6d5f_brazil.png";
+    const MX_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/b132c7fc-2f90-4bda-82de-78223c5c3725_mexico.png";
 
     /* ========== SNOW ========== */
     function createSnowflakes(count = 40) {
@@ -1316,7 +1310,16 @@
         const rank = r.c[1]?.v;
         const username = r.c[2]?.v ? String(r.c[2].v).trim() : "";
         const turnover = r.c[3]?.v;
-        const flagUrl = r.c[4]?.v ? String(r.c[4].v).trim() : "";
+
+        let flagCode = r.c[4]?.v ? String(r.c[4].v).trim() : "";
+        let flagUrl = "";
+        if (flagCode) {
+          const upper = flagCode.toUpperCase();
+          if (upper === "BR") flagUrl = BR_FLAG_URL;
+          else if (upper === "MX") flagUrl = MX_FLAG_URL;
+          else flagUrl = flagCode; // treat as direct URL
+        }
+
         if (!date || !rank || !username) return;
         rows.push({ date, rank, username, turnover, flagUrl });
       });

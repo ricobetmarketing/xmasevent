@@ -1378,39 +1378,53 @@ let currentLeaderboardDate = null;
     
 if (startPlayingBtn) {
   startPlayingBtn.addEventListener("click", () => {
-    const origin = window.location.origin || "";
-    const inIframe = window.self !== window.top; // true when inside inbox iframe
+    // Where this HTML itself is hosted (probably github)
+    const selfOrigin = window.location.origin || "";
 
-    // All domains where user may already be logged in
+    // Try to detect the page that is embedding this HTML in an iframe
+    const parentOrigin = (() => {
+      try {
+        if (!document.referrer) return "";
+        const u = new URL(document.referrer);
+        return u.origin;              // e.g. https://www.ricobet.net
+      } catch (e) {
+        return "";
+      }
+    })();
+
+    // All domains where the user may already be logged in
     const ricoDomains = [
       "https://www.rico.bet",
       "https://www.ricobet.com.mx",
       "https://www.ricobet.net"
     ];
 
+    let baseOrigin = "";
     let finalUrl = "";
 
-    // 1) If we are already on any Rico domain (including ricobet.net),
-    //    ALWAYS use that same domain + /slots
-    if (ricoDomains.includes(origin)) {
-      finalUrl = origin + "/slots";
+    // 1) Prefer the parent page (iframe container) if it is a Rico domain
+    if (ricoDomains.includes(parentOrigin)) {
+      baseOrigin = parentOrigin;
     }
-    // 2) Otherwise (preview / github / external), fall back by language
-    else {
+    // 2) Otherwise, if THIS page itself is on a Rico domain, use that
+    else if (ricoDomains.includes(selfOrigin)) {
+      baseOrigin = selfOrigin;
+    }
+
+    // 3) If we found a Rico origin, always go to /slots on that same domain
+    if (baseOrigin) {
+      finalUrl = baseOrigin + "/slots";
+    } else {
+      // 4) Fallback when not on any Rico domain (e.g. direct GitHub link)
       if (currentLang === "es") {
-        finalUrl = "https://www.ricobet.com.mx/slots"; // MX default
+        finalUrl = "https://www.ricobet.com.mx/slots";  // MX default
       } else {
         finalUrl = "https://www.rico.bet/slots";        // BR/EN/PT default
       }
     }
 
-    // 3) If inside iframe -> change TOP window (exit iframe)
-    if (inIframe) {
-      (window.top || window).location.href = finalUrl;
-    } else {
-      // normal page
-      window.location.href = finalUrl;
-    }
+    // 5) Always navigate the TOP window (so you exit iframe)
+    (window.top || window).location.href = finalUrl;
   });
 }
 

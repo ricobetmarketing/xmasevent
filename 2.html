@@ -1378,43 +1378,41 @@ let currentLeaderboardDate = null;
     
 if (startPlayingBtn) {
   startPlayingBtn.addEventListener("click", () => {
-
     const origin = window.location.origin || "";
-    const inIframe = window.self !== window.top;   // detect iframe
-    let finalUrl = "";
+    const inIframe = window.self !== window.top; // true when inside inbox iframe
 
-    // Determine default URL by language
-    if (currentLang === "es") {
-      finalUrl = "https://www.ricobet.com.mx/slots";   // MX default
-    } else {
-      finalUrl = "https://www.rico.bet/slots";         // BR/EN/PT default
-    }
-
-    // Recognized Rico domains where login session exists
+    // All domains where user may already be logged in
     const ricoDomains = [
       "https://www.rico.bet",
       "https://www.ricobet.com.mx",
       "https://www.ricobet.net"
     ];
 
-    // --- SCENARIO 1: Inside your platform iframe ---
-    if (inIframe) {
-      // Always open new tab (your preferred behavior)
-      window.open(finalUrl, "_blank");
-      return;
-    }
+    let finalUrl = "";
 
-    // --- SCENARIO 2: Standalone page ---
-    // If already on a Rico domain, stay on that domain
+    // 1) If we are already on any Rico domain (including ricobet.net),
+    //    ALWAYS use that same domain + /slots
     if (ricoDomains.includes(origin)) {
       finalUrl = origin + "/slots";
     }
+    // 2) Otherwise (preview / github / external), fall back by language
+    else {
+      if (currentLang === "es") {
+        finalUrl = "https://www.ricobet.com.mx/slots"; // MX default
+      } else {
+        finalUrl = "https://www.rico.bet/slots";        // BR/EN/PT default
+      }
+    }
 
-    // Redirect full page
-    window.location.href = finalUrl;
+    // 3) If inside iframe -> change TOP window (exit iframe)
+    if (inIframe) {
+      (window.top || window).location.href = finalUrl;
+    } else {
+      // normal page
+      window.location.href = finalUrl;
+    }
   });
 }
-
 
 
     if (howWorksBtn && faqModal) {

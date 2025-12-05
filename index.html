@@ -114,7 +114,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
   justify-content: center;
   overflow: hidden;
 }
@@ -129,6 +130,8 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+   text-align: center;
+  align-items: center;
 }
 
 .countdown-time-wrapper {
@@ -1304,15 +1307,13 @@ let currentLeaderboardDate = null;
       }
 
       const result = findRankForDate(q, displayDate);
-      if (!result) {
-        searchResult.innerHTML =
-          'No username found for <strong>' +
-          q +
-          "</strong> on <strong>" +
-          displayDate +
-          "</strong> in the leaderboard yet.";
-        return;
-      }
+ if (!result) {
+  const dict = translations[currentLang];
+  searchResult.innerHTML = dict.noUserFound
+    .replace("{user}", q)
+    .replace("{date}", displayDate);
+  return;
+}
 
       const rankPrize = prizeForRank(result.rank);
       const baseText =
@@ -1397,6 +1398,7 @@ let currentLeaderboardDate = null;
         countdownMeta1: "Countdown timer based on UTC-6",
         lbTopLabel: "Results update in",
         searchBtn: "Find",
+        noUserFound: "No username found for <strong>{user}</strong> on <strong>{date}</strong> in the leaderboard yet.",
         searchPlaceholder: "Search your username…",
         btnPlay: "Start Playing",
         btnHow: "How it works / T&C",
@@ -1551,6 +1553,7 @@ let currentLeaderboardDate = null;
       },
       pt: {
         countdownLabel1: "Próximo pagamento de prêmios em",
+        noUserFound: "Nenhum usuário encontrado para <strong>{user}</strong> em <strong>{date}</strong> no ranking ainda.",
         countdownMeta1: "Cronômetro baseado em UTC-6",
         lbTopLabel: "Atualização dos resultados em",
         searchBtn: "Procurar",
@@ -1705,6 +1708,7 @@ let currentLeaderboardDate = null;
       },
       es: {
         countdownLabel1: "Próximo pago de premios en",
+        noUserFound: "No se encontró el usuario <strong>{user}</strong> en <strong>{date}</strong> en la tabla de posiciones.",
         countdownMeta1: "Contador basado en UTC-6",
         lbTopLabel: "Actualización de resultados en",
         searchBtn: "Buscar",

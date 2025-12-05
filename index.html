@@ -212,6 +212,14 @@
   }
 }
 
+    @keyframes heartbeat {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.08); }
+  45%  { transform: scale(1); }
+  60%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+
 
     /* LEADERBOARD CARD */
     .leaderboard-card {
@@ -570,11 +578,13 @@
       white-space: nowrap;
     }
 
-    .btn-play {
-      background: linear-gradient(135deg, #f9735b, #b91c1c);
-      color: #fef2f2;
-      box-shadow: 0 10px 20px rgba(185,28,28,0.7);
-    }
+ .btn-play {
+  background: linear-gradient(135deg, #f9735b, #b91c1c);
+  color: #fef2f2;
+  box-shadow: 0 10px 20px rgba(185,28,28,0.7);
+  animation: heartbeat 1.5s ease-in-out infinite;
+}
+
 
     .btn-how {
       background: #020617;
@@ -1367,9 +1377,19 @@ let currentLeaderboardDate = null;
     const faqCloseBtn = document.getElementById("faqCloseBtn");
 
     if (startPlayingBtn) {
-      startPlayingBtn.addEventListener("click", () => {
-        window.open("https://www.rico.bet/", "_blank");
-      });
+ startPlayingBtn.addEventListener("click", () => {
+  let url = "https://www.rico.bet/slots"; // default EN & BR
+
+  if (currentLang === "pt") {
+    url = "https://www.rico.bet/slots"; // Brazil
+  } 
+  else if (currentLang === "es") {
+    url = "https://www.ricobet.com.mx/slots"; // Mexico
+  }
+
+  window.open(url, "_blank");
+});
+
     }
 
     if (howWorksBtn && faqModal) {

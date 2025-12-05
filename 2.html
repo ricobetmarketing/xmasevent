@@ -1382,21 +1382,18 @@ if (startPlayingBtn) {
     const origin = window.location.origin || "";
     let finalUrl = "";
 
-    // Domains where session already exists
     const validDomains = [
       "https://www.rico.bet",
       "https://www.ricobet.com.mx",
       "https://www.ricobet.net"
     ];
 
-    // SCENARIO 1:
-    // Player is already inside RicoBet website
+    // SCENARIO 1: already on your site (in iframe or not)
     if (validDomains.includes(origin)) {
-      finalUrl = origin + "/slots";    // keep session
+      finalUrl = origin + "/slots";
     }
 
-    // SCENARIO 2:
-    // Player is outside your site (Github, CRM preview, etc)
+    // SCENARIO 2: outside your site (e.g. GitHub, preview, etc.)
     else {
       if (currentLang === "es") {
         finalUrl = "https://www.ricobet.com.mx/slots";  // MX
@@ -1405,8 +1402,8 @@ if (startPlayingBtn) {
       }
     }
 
-    // redirect in same tab
-    window.location.href = finalUrl;
+    // 🔥 IMPORTANT: break out of iframe & redirect parent page
+    (window.top || window).location.href = finalUrl;
   });
 }
 

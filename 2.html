@@ -1380,30 +1380,38 @@ if (startPlayingBtn) {
   startPlayingBtn.addEventListener("click", () => {
 
     const origin = window.location.origin || "";
-    let finalUrl = "";
+    const inIframe = window.self !== window.top;   // detect iframe
+    let url = "";
 
+    // Determine correct URL by language
+    if (currentLang === "es") {
+      url = "https://www.ricobet.com.mx/slots"; // MX
+    } else {
+      url = "https://www.rico.bet/slots";       // BR & EN
+    }
+
+    // --- SCENARIO 1: Inside your platform iframe ---
+    if (inIframe) {
+      // Your old behavior (works PERFECTLY)
+      window.open(url, "_blank");
+      return;
+    }
+
+    // --- SCENARIO 2: User is NOT inside iframe ---
+    // Check if already on a Rico domain
     const validDomains = [
       "https://www.rico.bet",
       "https://www.ricobet.com.mx",
       "https://www.ricobet.net"
     ];
 
-    // SCENARIO 1: already on your site (in iframe or not)
     if (validDomains.includes(origin)) {
-      finalUrl = origin + "/slots";
+      // Stay inside same domain for no logout
+      url = origin + "/slots";
     }
 
-    // SCENARIO 2: outside your site (e.g. GitHub, preview, etc.)
-    else {
-      if (currentLang === "es") {
-        finalUrl = "https://www.ricobet.com.mx/slots";  // MX
-      } else {
-        finalUrl = "https://www.rico.bet/slots";        // BR & EN
-      }
-    }
-
-    // 🔥 IMPORTANT: break out of iframe & redirect parent page
-    (window.top || window).location.href = finalUrl;
+    // Redirect whole page (non-iframe)
+    window.location.href = url;
   });
 }
 

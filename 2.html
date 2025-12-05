@@ -1378,16 +1378,38 @@ let currentLeaderboardDate = null;
     
 if (startPlayingBtn) {
   startPlayingBtn.addEventListener("click", () => {
-    // always use the same domain the player is currently on
-    const origin = window.location.origin || "https://www.rico.bet";
-    const path = "/slots"; // same path for BR & MX according to you
 
-    const url = origin + path;
+    const origin = window.location.origin || "";
+    let finalUrl = "";
 
-    // open in same tab so session definitely stays
-    window.location.href = url;
+    // Domains where session already exists
+    const validDomains = [
+      "https://www.rico.bet",
+      "https://www.ricobet.com.mx",
+      "https://www.ricobet.net"
+    ];
+
+    // SCENARIO 1:
+    // Player is already inside RicoBet website
+    if (validDomains.includes(origin)) {
+      finalUrl = origin + "/slots";    // keep session
+    }
+
+    // SCENARIO 2:
+    // Player is outside your site (Github, CRM preview, etc)
+    else {
+      if (currentLang === "es") {
+        finalUrl = "https://www.ricobet.com.mx/slots";  // MX
+      } else {
+        finalUrl = "https://www.rico.bet/slots";        // BR & EN
+      }
+    }
+
+    // redirect in same tab
+    window.location.href = finalUrl;
   });
 }
+
 
 
     if (howWorksBtn && faqModal) {

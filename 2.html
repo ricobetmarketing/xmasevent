@@ -922,9 +922,9 @@
     const MX_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/b132c7fc-2f90-4bda-82de-78223c5c3725_mexico.png";
 
     /* BANNER URLS */
-    const BANNER_EN = "https://ricobr.ft-crm.com/media-api/serve/7f955edc-2fa5-4a08-af64-91361b314f6f_Turnover_Challenge.png";
-    const BANNER_BR = "https://ricobr.ft-crm.com/media-api/serve/55a5d101-fd2f-4dfa-9d64-1739d55f7957_BR.png";
-    const BANNER_MX = "https://ricobr.ft-crm.com/media-api/serve/b7044146-d9e1-4a40-b9d6-d31965602cd7_MX.png";
+    const BANNER_EN = "https://ricobr.ft-crm.com/media-api/serve/bf286818-b2a5-4b37-b39c-90ba577a1480_en.png";
+    const BANNER_BR = "https://ricobr.ft-crm.com/media-api/serve/b2f0e72e-e6d4-4058-8529-5740305cd6e2_br.png";
+    const BANNER_MX = "https://ricobr.ft-crm.com/media-api/serve/2cef786e-6407-4c59-bc62-eb6f7f254c76_MX.png";
 
     const bannerImg = document.querySelector(".hero-banner");
 
@@ -1441,19 +1441,19 @@
         colUser: "Username",
         colTurnover: "Score (USD)",
         colPrize: "Prize",
-        faqTitle: "Daily Turnover Challenge – FAQ",
+        faqTitle: "The Daily Ranking – FAQ",
         faqSub: "Tap on each question to expand and read the details.",
         faqItems: [
           {
-            q: "What is the Daily Turnover Challenge?",
+            q: "What is The Daily Ranking?",
             a: `
-              <p>The Daily Turnover Challenge is a daily leaderboard event where players from Rico.bet Brazil and Rico.bet Mexico compete together based on their total turnover from all game categories. The Top 20 players every day win guaranteed rewards.</p>
+              <p>The Daily Ranking is a daily leaderboard event where players from Rico.bet Brazil and Rico.bet Mexico compete together based on their total Score earned each day. The Top 20 players win guaranteed prizes daily.</p>
             `
           },
           {
             q: "Which game categories are included?",
             a: `
-              <p>All game categories count toward your turnover, including:</p>
+              <p>All game categories count toward your Score , including:</p>
               <ul>
                 <li>• Slots</li>
                 <li>• Aviator / Crash</li>
@@ -1470,27 +1470,27 @@
           {
             q: "How do I participate?",
             a: `
-              <p>Simply play any game during the event period. Your turnover is tracked automatically and added to the leaderboard.</p>
+              <p>Simply play any game during the event period. Your score is tracked automatically and added to the leaderboard.</p>
             `
           },
           {
-            q: "How are points calculated?",
+            q: "How is the Score calculated?",
             a: `
-              <p>Points are based on your total turnover from all categories, converted to USD.</p>
+              <p>Your Score is based on your total turnover from all categories, converted to USD for fairness between Brazil and Mexico.</p>
               <p><strong>Currency Conversion:</strong></p>
               <ul>
                 <li>• 1 USD = BRL 5</li>
                 <li>• 1 USD = MXN 18</li>
               </ul>
-              <p><strong>Point Formula:</strong> 1 USD wagered = 1 Point</p>
+              <p><strong>Point Formula:</strong> 1 USD in turnover = 1 Point</p>
               <p><strong>Examples:</strong></p>
               <ul>
-                <li>• BRL 500 wagered → 100 points</li>
-                <li>• MXN 1800 wagered → 100 points</li>
-                <li>• USD 250 wagered → 250 points</li>
+                <li>• BRL 500 wagered → 100 Score</li>
+                <li>• MXN 1800 wagered → 100 Score</li>
+                <li>• USD 250 wagered → 250 Score</li>
               </ul>
             `
-          },
+          }, 
           {
             q: "What is the event time zone?",
             a: `
@@ -1539,7 +1539,7 @@
           {
             q: "Do cancelled or void bets count?",
             a: `
-              <p>No. Only settled and valid wagers count toward your turnover.</p>
+              <p>No. Only settled and valid wagers contribute to your Score. </p>
             `
           },
           {
@@ -1551,7 +1551,7 @@
           {
             q: "What happens if two players have the same turnover?",
             a: `
-              <p>The player who reached the score earlier (based on UTC timestamp) will be placed higher.</p>
+              <p>The player who reached the Score earlier (based on UTC timestamp) will be placed higher.</p>
             `
           },
           {
@@ -1599,19 +1599,19 @@
         colUser: "Usuário",
         colTurnover: "Pontuação (USD)",
         colPrize: "Prêmio",
-        faqTitle: "Daily Turnover Challenge – FAQ",
+        faqTitle: "The Daily Ranking – FAQ",
         faqSub: "Toque em cada pergunta para expandir e ver os detalhes.",
         faqItems: [
           {
-            q: "O que é o Daily Turnover Challenge?",
+            q: "O que é o The Daily Ranking?",
             a: `
-              <p>O Daily Turnover Challenge é um evento diário onde jogadores da Rico.bet Brasil e Rico.bet México competem juntos através do turnover total em todas as categorias de jogos. Os 20 melhores jogadores do dia ganham prêmios garantidos.</p>
+              <p>O The Daily Ranking é um evento diário de leaderboard onde jogadores da Rico.bet Brasil e Rico.bet México competem juntos com base na Pontuação total acumulada no dia. Os 20 melhores jogadores recebem prêmios garantidos diariamente.</p>
             `
           },
           {
             q: "Quais categorias de jogos estão incluídas?",
             a: `
-              <p>Todas as categorias contam para o turnover, incluindo:</p>
+              <p>Todas as categorias contam para a sua Pontuação, incluindo:</p>
               <ul>
                 <li>• Slots</li>
                 <li>• Aviator / Crash</li>
@@ -1626,15 +1626,15 @@
             `
           },
           {
-            q: "Como eu participo?",
+            q: "Como posso participar? ",
             a: `
-              <p>Basta jogar qualquer jogo durante o período do evento. Seu turnover é registrado automaticamente no ranking.</p>
+              <p>Basta jogar qualquer jogo durante o evento. Sua Pontuação é registrada automaticamente no leaderboard.</p>
             `
           },
           {
-            q: "Como os pontos são calculados?",
+            q: "Como a Pontuação é calculada?",
             a: `
-              <p>Os pontos são baseados no turnover total, convertido para USD.</p>
+              <p>Sua Pontuação é baseada no total apostado em todas as categorias, convertido para USD para garantir justiça entre Brasil e México.</p>
               <p><strong>Conversão:</strong></p>
               <ul>
                 <li>• 1 USD = BRL 5</li>
@@ -1642,7 +1642,9 @@
               <p><strong>Fórmula:</strong> 1 USD apostado = 1 ponto</p>
               <p><strong>Exemplo:</strong></p>
               <ul>
-                <li>• BRL 500 apostados → 100 pontos</li>
+                    <li>• BRL 500 apostados → 100 Pontuação</li>
+                <li>• MXN 1800 apostados → 100 Pontuação</li>
+                <li>• USD 250 apostados → 250 Pontuação</li>
               </ul>
             `
           },
@@ -1656,11 +1658,11 @@
           {
             q: "Por que usar o horário do México?",
             a: `
-              <p>Como é uma competição entre Brasil e México, usar um único fuso horário garante justiça. Todas as apostas são registradas em UTC e convertidas para UTC-6.</p>
+              <p>Como é uma competição entre Brasil e México, usar um horário unificado garante justiça. As apostas são registradas em UTC e convertidas para UTC-6 para cálculo da Pontuação e do ranking.</p>
             `
           },
           {
-            q: "Quando os prêmios são creditados?",
+            q: " Quando os prêmios são creditados?",
             a: `
               <p>Os prêmios são creditados automaticamente no dia seguinte, entre:</p>
               <p><strong>01:00 – 02:00 (UTC-6)</strong></p>
@@ -1669,7 +1671,7 @@
           {
             q: "Quais são os prêmios diários?",
             a: `
-              <p>Os Top 20 jogadores recebem os seguintes prêmios todos os dias:</p>
+              <p>Os Top 20 recebem:</p>
               <ul>
                 <li>• 1º → US$100</li>
                 <li>• 2º → US$70</li>
@@ -1688,47 +1690,47 @@
           {
             q: "Com que frequência o ranking é atualizado?",
             a: `
-              <p>O ranking atualiza a cada 2 horas (UTC-6).</p>
+              <p>A cada 2 horas (UTC-6).</p>
             `
           },
           {
             q: "Apostas canceladas contam?",
             a: `
-              <p>Não. Somente apostas válidas e liquidadas contam.</p>
+              <p>Não. Somente apostas válidas e liquidadas contam para sua Pontuação.</p>
             `
           },
           {
             q: "Posso ganhar vários dias?",
             a: `
-              <p>Sim! Como o evento é diário, você pode ganhar todos os dias se ficar no Top 20.</p>
+              <p>Sim! Este é um evento diário, então você pode ganhar todos os dias.</p>
             `
           },
           {
-            q: "E se dois jogadores tiverem o mesmo turnover?",
+            q: "O que acontece se dois jogadores tiverem a mesma Pontuação?",
             a: `
-              <p>O jogador que atingiu o valor primeiro (com base no timestamp UTC) fica acima.</p>
+              <p>Quem atingir a Pontuação primeiro (de acordo com UTC) ficará acima no ranking. </p>
             `
           },
           {
-            q: "Há regras de abuso ou restrições?",
+            q: "Existem regras contra abuso?",
             a: `
-              <p>Sim. As seguintes ações podem desclassificar:</p>
+              <p>Sim. A Rico.bet pode desclassificar jogadores por:</p>
               <ul>
                 <li>• Multi-contas</li>
-                <li>• Padrões de aposta irregulares</li>
+                <li>• Apostas irregulares</li>
                 <li>• Abuso de bônus</li>
-                <li>• Atividade fraudulenta</li>
+                <li>• Fraude ou comportamento suspeito</li>
               </ul>
             `
           },
           {
             q: "Onde recebo meu prêmio?",
             a: `
-              <p>Os prêmios são creditados diretamente na sua carteira Rico.bet em créditos de jogo.</p>
+              <p>Diretamente na sua carteira Rico.bet, em créditos de jogo.</p>
             `
           },
           {
-            q: "Preciso falar com o suporte para receber?",
+            q: "Preciso contatar o suporte para receber?",
             a: `
               <p>Não. Os prêmios são automáticos. Basta verificar sua carteira após 01:00–02:00 (UTC-6).</p>
             `
@@ -1736,7 +1738,7 @@
           {
             q: "O evento pode ser alterado ou cancelado?",
             a: `
-              <p>Sim, a Rico.bet pode ajustar, pausar ou encerrar o evento se necessário para manter a justiça.</p>
+              <p>Sim, caso necessário para manter justiça e estabilidade.</p>
             `
           }
         ]
@@ -1754,19 +1756,19 @@
         colUser: "Usuario",
         colTurnover: "Puntuación (USD) ",
         colPrize: "Premio",
-        faqTitle: "Daily Turnover Challenge – FAQ",
+        faqTitle: "The Daily Ranking – FAQ",
         faqSub: "Toca cada pregunta para expandir y ver los detalles.",
         faqItems: [
           {
-            q: "¿Qué es el Daily Turnover Challenge?",
+            q: "¿Qué es The Daily Ranking?",
             a: `
-              <p>El Daily Turnover Challenge es un evento diario donde jugadores de Rico.bet Brasil y Rico.bet México compiten juntos según su turnover total en todas las categorías de juegos. Los 20 mejores jugadores del día ganan premios garantizados.</p>
+              <p>The Daily Ranking es un evento diario de leaderboard donde jugadores de Rico.bet Brasil y Rico.bet México compiten según su Puntuación total acumulada cada día. Los Top 20 jugadores reciben premios garantizados diariamente.</p>
             `
           },
           {
             q: "¿Qué categorías de juegos están incluidas?",
             a: `
-              <p>Todas las categorías cuentan para el turnover, incluyendo:</p>
+              <p>Todas las categorías suman a tu Puntuación, incluyendo:</p>
               <ul>
                 <li>• Slots</li>
                 <li>• Aviator / Crash</li>
@@ -1777,27 +1779,29 @@
                 <li>• Bingo / Keno</li>
                 <li>• Cualquier juego disponible en Rico.bet</li>
               </ul>
-              <p>Si puedes apostar, cuenta.</p>
+              <p>Si puedes apostar, genera Puntuación.</p>
             `
           },
           {
             q: "¿Cómo participo?",
             a: `
-              <p>Solo juega cualquier juego durante el período del evento. Tu turnover se registra automáticamente en la tabla de posiciones.</p>
+              <p>Juega cualquier juego durante el evento. Tu Puntuación se registra automáticamente en el leaderboard.</p>
             `
           },
           {
-            q: "¿Cómo se calculan los puntos?",
+            q: "¿Cómo se calcula la Puntuación?",
             a: `
-              <p>Los puntos se basan en tu turnover total, convertido a USD.</p>
+              <p>Tu Puntuación se basa en el total apostado en todas las categorías, convertido a USD para mantener justicia entre Brasil y México.</p>
               <p><strong>Conversión:</strong></p>
               <ul>
                 <li>• 1 USD = MXN 18</li>
               </ul>
-              <p><strong>Fórmula:</strong> 1 USD apostado = 1 punto</p>
+              <p><strong>Fórmula:</strong> 1 USD apostado = 1 Puntuación</p>
               <p><strong>Ejemplo:</strong></p>
               <ul>
-                <li>• MXN 1800 apostados → 100 puntos</li>
+                <li>• BRL 500 apostados → 100 Puntuación</li>
+                <li>• MXN 1800 apostados → 100 Puntuación</li>
+                <li>• USD 250 apostados → 250 Puntuación</li>
               </ul>
             `
           },
@@ -1809,9 +1813,9 @@
             `
           },
           {
-            q: "¿Por qué usar horario de México?",
+            q: "¿Por qué se usa el horario de México?",
             a: `
-              <p>Como es una competencia entre Brasil y México, usar un solo huso horario garantiza igualdad. Todas las apuestas se registran en UTC y se convierten a UTC-6.</p>
+              <p>Como es una competencia entre Brasil y México, usar un horario unificado garantiza igualdad. Las apuestas se registran en UTC y se convierten a UTC-6 para calcular la Puntuación y el ranking.</p>
             `
           },
           {
@@ -1824,7 +1828,7 @@
           {
             q: "¿Cuáles son los premios diarios?",
             a: `
-              <p>Los Top 20 jugadores ganan los siguientes premios cada día:</p>
+              <p>Los Top 20 reciben:</p>
               <ul>
                 <li>• 1 → US$100</li>
                 <li>• 2 → US$70</li>
@@ -1843,55 +1847,55 @@
           {
             q: "¿Cada cuánto se actualiza el ranking?",
             a: `
-              <p>La tabla de posiciones se actualiza cada 2 horas (UTC-6).</p>
+              <p>Cada 2 horas (UTC-6).</p>
             `
           },
           {
-            q: "¿Las apuestas canceladas cuentan?",
+            q: "¿Cuentan las apuestas canceladas?",
             a: `
-              <p>No. Solo cuentan apuestas válidas y liquidadas.</p>
+              <p>No. Solo las apuestas válidas y liquidadas generan Puntuación.</p>
             `
           },
           {
             q: "¿Puedo ganar varios días?",
             a: `
-              <p>Sí. Es un evento diario, puedes ganar todos los días si quedas dentro del Top 20.</p>
+              <p>Sí, es un evento diario, puedes ganar todos los días.</p>
             `
           },
           {
-            q: "¿Qué pasa si dos jugadores tienen el mismo turnover?",
+            q: "¿Qué pasa si dos jugadores tienen la misma Puntuación?",
             a: `
-              <p>El jugador que alcanzó la cantidad primero (según timestamp UTC) obtiene la posición más alta.</p>
+              <p>Quien alcance esa Puntuación primero (según UTC) estará más arriba en el ranking.</p>
             `
           },
           {
-            q: "¿Hay reglas de abuso o restricciones?",
+            q: "¿¿Hay reglas de abuso o fraude?",
             a: `
               <p>Sí. Se puede descalificar por:</p>
               <ul>
                 <li>• Multi-cuentas</li>
                 <li>• Apuestas irregulares</li>
                 <li>• Abuso de bonos</li>
-                <li>• Actividad sospechosa o fraudulenta</li>
+                <li>• Fraude o actividad sospechosa</li>
               </ul>
             `
           },
           {
             q: "¿Dónde recibo mi premio?",
             a: `
-              <p>Los premios se acreditan directamente en tu billetera Rico.bet como créditos de juego.</p>
+              <p>Directamente en tu billetera Rico.bet como créditos de juego.</p>
             `
           },
           {
-            q: "¿Debo contactar al soporte para recibir mi premio?",
+            q: "¿Debo contactar soporte para recibirlo?",
             a: `
-              <p>No. Los premios son automáticos. Solo necesitas revisar tu billetera después de las 01:00–02:00 (UTC-6).</p>
+              <p>No. Los premios se acreditan automáticamente. Solo necesitas revisar tu billetera después de las 01:00–02:00 (UTC-6).</p>
             `
           },
           {
             q: "¿El evento puede cambiar o cancelarse?",
             a: `
-              <p>Sí, Rico.bet puede modificar, pausar o cancelar el evento si es necesario.</p>
+              <p>Sí, si es necesario para mantener justicia y estabilidad.</p>
             `
           }
         ]

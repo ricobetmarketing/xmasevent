@@ -904,12 +904,15 @@
 
     /* ========== CONFIG FOR GOOGLE SHEET ========== */
     const GOOGLE_SHEET_ID = "14R8r4m2R4nVJLsYDtCD5JjgtSV-LIjOxZkCiUaohnls";
-    const SHEET_NAME = "Leaderboard";
-    const SHEET_URL =
-      "https://docs.google.com/spreadsheets/d/" +
-      GOOGLE_SHEET_ID +
-      "/gviz/tq?tqx=out:json&sheet=" +
-      encodeURIComponent(SHEET_NAME);
+    const SHEET_NAME = "Leaderboard_feed";
+   const tq = encodeURIComponent("select A,B,C,D,E where A is not null");
+const SHEET_URL =
+  "https://docs.google.com/spreadsheets/d/" +
+  GOOGLE_SHEET_ID +
+  "/gviz/tq?tqx=out:json&sheet=" +
+  encodeURIComponent(SHEET_NAME) +
+  "&tq=" + tq;
+
 
     /* FLAG URL MAPPING */
     const BR_FLAG_URL = "https://ricobr.ft-crm.com/media-api/serve/f6b3499e-2692-4d6e-b86d-58d1c55b6d5f_brazil.png";

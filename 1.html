@@ -944,23 +944,30 @@ const SHEET_URL =
     /* ========== DAILY PAYOUT COUNTDOWN (UTC-6 logic) ========== */
     const nextRewardTimeEl = document.getElementById("nextRewardTime");
 
-    function getNextMexicoPayoutUtcMs(nowUtcMs) {
-      const offsetMs = -6 * 60 * 60 * 1000; // UTC-6
-      const mexNow = new Date(nowUtcMs + offsetMs);
-      let target = new Date(
-        mexNow.getFullYear(),
-        mexNow.getMonth(),
-        mexNow.getDate(),
-        1,
-        0,
-        0,
-        0
-      );
-      if (target <= mexNow) {
-        target.setDate(target.getDate() + 1);
-      }
-      return target.getTime() - offsetMs;
-    }
+function getNextMexicoPayoutUtcMs(nowUtcMs) {
+  const offsetMs = -6 * 60 * 60 * 1000; // UTC-6
+  const mexNow = new Date(nowUtcMs + offsetMs);
+
+  // Target = today 13:00 (1PM) in Mexico time
+  let target = new Date(
+    mexNow.getFullYear(),
+    mexNow.getMonth(),
+    mexNow.getDate(),
+    13, // <-- 13:00 (1PM)
+    0,
+    0,
+    0
+  );
+
+  // If already passed 13:00 today, target tomorrow 13:00
+  if (target <= mexNow) {
+    target.setDate(target.getDate() + 1);
+  }
+
+  // Convert target (Mexico-local) back to UTC ms
+  return target.getTime() - offsetMs;
+}
+
 
     function updatePayoutCountdown() {
       if (!nextRewardTimeEl) return;

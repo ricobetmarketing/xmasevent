@@ -945,22 +945,26 @@ const SHEET_URL =
     const nextRewardTimeEl = document.getElementById("nextRewardTime");
 
     function getNextMexicoPayoutUtcMs(nowUtcMs) {
-      const offsetMs = -6 * 60 * 60 * 1000; // UTC-6
-      const mexNow = new Date(nowUtcMs + offsetMs);
-      let target = new Date(
-        mexNow.getFullYear(),
-        mexNow.getMonth(),
-        mexNow.getDate(),
-        1,
-        0,
-        0,
-        0
-      );
-      if (target <= mexNow) {
-        target.setDate(target.getDate() + 1);
-      }
-      return target.getTime() - offsetMs;
-    }
+  const offsetMs = -6 * 60 * 60 * 1000; // Mexico UTC-6
+  const mexNowMs = nowUtcMs + offsetMs; // "Mexico clock" expressed in ms
+
+  const mexNow = new Date(mexNowMs);
+
+  // IMPORTANT: use UTC getters because mexNowMs is already shifted
+  const y = mexNow.getUTCFullYear();
+  const m = mexNow.getUTCMonth();
+  const d = mexNow.getUTCDate();
+
+  // Target at 13:00 Mexico time (1PM)
+  let targetMexMs = Date.UTC(y, m, d, 13, 0, 0);
+
+  // If already passed, target tomorrow
+  if (targetMexMs <= mexNowMs) targetMexMs += 24 * 60 * 60 * 1000;
+
+  // Convert back to real UTC ms
+  return targetMexMs - offsetMs;
+}
+
 
     function updatePayoutCountdown() {
       if (!nextRewardTimeEl) return;

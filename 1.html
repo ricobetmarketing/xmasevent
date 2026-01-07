@@ -153,32 +153,7 @@
       animation: payoutPulse 2s ease-in-out infinite;
     }
 
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: #e5f0ff;
-      font-size: 9px;
-      opacity: 0.6;
-      pointer-events: none;
-      z-index: 5;
-      animation-name: snowFall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-    }
 
-    @keyframes snowFall {
-      0% {
-        transform: translateY(-10px);
-        opacity: 0;
-      }
-      10% {
-        opacity: 0.9;
-      }
-      100% {
-        transform: translateY(110vh);
-        opacity: 0;
-      }
-    }
 
     @media (max-width: 480px) {
       .countdown-time {
@@ -883,24 +858,7 @@
   <div id="toast" class="toast">Done!</div>
 
   <script>
-    /* ========== SNOW ========== */
-    function createSnowflakes(count = 40) {
-      for (let i = 0; i < count; i++) {
-        const el = document.createElement("div");
-        el.className = "snowflake";
-        el.textContent = "✻";
-        const left = Math.random() * 100;
-        const duration = 8 + Math.random() * 8;
-        const delay = Math.random() * -duration;
-        const size = 7 + Math.random() * 6;
-        el.style.left = left + "vw";
-        el.style.fontSize = size + "px";
-        el.style.animationDuration = duration + "s";
-        el.style.animationDelay = delay + "s";
-        document.body.appendChild(el);
-      }
-    }
-    createSnowflakes();
+    
 
     /* ========== CONFIG FOR GOOGLE SHEET ========== */
     const GOOGLE_SHEET_ID = "1YnAERuDOBiNG4wSZwMkx_g97FXKtxyBokFE9uFm04HQ";

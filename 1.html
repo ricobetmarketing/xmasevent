@@ -746,6 +746,47 @@
     ::-webkit-scrollbar-track { background: #020617; }
     ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 999px; }
     ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+
+    /* ===== Premium floating particles (non-seasonal) ===== */
+.particle {
+  position: fixed;
+  top: -12px;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.35;
+  background: radial-gradient(circle, rgba(34,197,94,0.95), rgba(34,197,94,0) 65%);
+  filter: blur(0.2px);
+  animation-name: particleFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.particle.p2 {
+  background: radial-gradient(circle, rgba(14,165,233,0.95), rgba(14,165,233,0) 65%);
+  opacity: 0.28;
+}
+
+.particle.p3 {
+  background: radial-gradient(circle, rgba(249,115,91,0.95), rgba(249,115,91,0) 65%);
+  opacity: 0.22;
+}
+
+@keyframes particleFall {
+  0%   { transform: translate3d(0, -12px, 0); opacity: 0; }
+  10%  { opacity: 0.55; }
+  100% { transform: translate3d(0, 112vh, 0); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle { display: none !important; }
+}
+
+    
   </style>
 </head>
 <body>
@@ -923,6 +964,31 @@ function getNextMexicoPayoutUtcMs(nowUtcMs) {
   return targetMexMs - offsetMs;
 }
 
+/* ===== Premium particles (non-seasonal) ===== */
+function createParticles(count = 26) {
+  for (let i = 0; i < count; i++) {
+    const el = document.createElement("div");
+    const variant = i % 3 === 0 ? "p2" : i % 3 === 1 ? "p3" : "";
+    el.className = "particle " + variant;
+
+    const left = Math.random() * 100;
+    const size = 5 + Math.random() * 10;          // 5–15px
+    const duration = 10 + Math.random() * 12;     // 10–22s
+    const delay = Math.random() * -duration;      // start staggered
+    const drift = (Math.random() * 40 - 20).toFixed(2); // -20..20 px drift
+
+    el.style.left = left + "vw";
+    el.style.width = size + "px";
+    el.style.height = size + "px";
+    el.style.animationDuration = duration + "s";
+    el.style.animationDelay = delay + "s";
+    el.style.transform = `translate3d(${drift}px, -12px, 0)`;
+
+    document.body.appendChild(el);
+  }
+}
+
+createParticles();
 
 
     function updatePayoutCountdown() {

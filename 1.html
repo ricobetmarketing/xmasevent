@@ -153,8 +153,7 @@
       animation: payoutPulse 2s ease-in-out infinite;
     }
 
-
-
+  
     @media (max-width: 480px) {
       .countdown-time {
         font-size: 26px;
@@ -746,47 +745,6 @@
     ::-webkit-scrollbar-track { background: #020617; }
     ::-webkit-scrollbar-thumb { background: #4b5563; border-radius: 999px; }
     ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
-
-
-    /* ===== Premium floating particles (non-seasonal) ===== */
-.particle {
-  position: fixed;
-  top: -12px;
-  left: 0;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  pointer-events: none;
-  z-index: 5;
-  opacity: 0.35;
-  background: radial-gradient(circle, rgba(34,197,94,0.95), rgba(34,197,94,0) 65%);
-  filter: blur(0.2px);
-  animation-name: particleFall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
-}
-
-.particle.p2 {
-  background: radial-gradient(circle, rgba(14,165,233,0.95), rgba(14,165,233,0) 65%);
-  opacity: 0.28;
-}
-
-.particle.p3 {
-  background: radial-gradient(circle, rgba(249,115,91,0.95), rgba(249,115,91,0) 65%);
-  opacity: 0.22;
-}
-
-@keyframes particleFall {
-  0%   { transform: translate3d(0, -12px, 0); opacity: 0; }
-  10%  { opacity: 0.55; }
-  100% { transform: translate3d(0, 112vh, 0); opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .particle { display: none !important; }
-}
-
-    
   </style>
 </head>
 <body>
@@ -899,11 +857,11 @@
   <div id="toast" class="toast">Done!</div>
 
   <script>
-    
+
 
     /* ========== CONFIG FOR GOOGLE SHEET ========== */
-    const GOOGLE_SHEET_ID = "1YnAERuDOBiNG4wSZwMkx_g97FXKtxyBokFE9uFm04HQ";
-    const SHEET_NAME = "Copy of Leaderboard_feed";
+    const GOOGLE_SHEET_ID = "14R8r4m2R4nVJLsYDtCD5JjgtSV-LIjOxZkCiUaohnls";
+    const SHEET_NAME = "Leaderboard_feed";
    const tq = encodeURIComponent("select A,B,C,D,E where A is not null");
 const SHEET_URL =
   "https://docs.google.com/spreadsheets/d/" +
@@ -943,7 +901,7 @@ const SHEET_URL =
     /* ========== DAILY PAYOUT COUNTDOWN (UTC-6 logic) ========== */
     const nextRewardTimeEl = document.getElementById("nextRewardTime");
 
-function getNextMexicoPayoutUtcMs(nowUtcMs) {
+    function getNextMexicoPayoutUtcMs(nowUtcMs) {
   const offsetMs = -6 * 60 * 60 * 1000; // Mexico UTC-6
   const mexNowMs = nowUtcMs + offsetMs; // "Mexico clock" expressed in ms
 
@@ -963,32 +921,6 @@ function getNextMexicoPayoutUtcMs(nowUtcMs) {
   // Convert back to real UTC ms
   return targetMexMs - offsetMs;
 }
-
-/* ===== Premium particles (non-seasonal) ===== */
-function createParticles(count = 26) {
-  for (let i = 0; i < count; i++) {
-    const el = document.createElement("div");
-    const variant = i % 3 === 0 ? "p2" : i % 3 === 1 ? "p3" : "";
-    el.className = "particle " + variant;
-
-    const left = Math.random() * 100;
-    const size = 5 + Math.random() * 10;          // 5–15px
-    const duration = 10 + Math.random() * 12;     // 10–22s
-    const delay = Math.random() * -duration;      // start staggered
-    const drift = (Math.random() * 40 - 20).toFixed(2); // -20..20 px drift
-
-    el.style.left = left + "vw";
-    el.style.width = size + "px";
-    el.style.height = size + "px";
-    el.style.animationDuration = duration + "s";
-    el.style.animationDelay = delay + "s";
-    el.style.transform = `translate3d(${drift}px, -12px, 0)`;
-
-    document.body.appendChild(el);
-  }
-}
-
-createParticles();
 
 
     function updatePayoutCountdown() {
@@ -1056,8 +988,12 @@ createParticles();
     const searchResult = document.getElementById("searchResult");
     const searchDateInput = document.getElementById("searchDate");
 
-    let allRows = [];
-    let currentLeaderboardDate = null;
+ let allRows = [];
+let currentLeaderboardDate = null;
+
+let allowedDates = [];     // latest 3 unique dates from sheet
+let minAllowedDate = "";   // earliest allowed (ISO)
+
 
     function flagInner(flagUrl) {
       if (flagUrl) {
@@ -1263,6 +1199,16 @@ createParticles();
           const uniqueDates = Array.from(
             new Set(allRows.map((r) => r.date))
           ).sort();
+          // ✅ Only allow latest 3 dates (from sheet)
+allowedDates = uniqueDates.slice(-3);
+minAllowedDate = allowedDates[0] || "";
+
+// lock date picker range (grey out earlier dates in native picker)
+if (searchDateInput && minAllowedDate) {
+  searchDateInput.min = minAllowedDate;
+  searchDateInput.max = allowedDates[allowedDates.length - 1];
+}
+
           const fromPicker = (searchDateInput && searchDateInput.value) || "";
           let target =
             preferredDate || fromPicker || uniqueDates[uniqueDates.length - 1];
@@ -1288,11 +1234,22 @@ createParticles();
       const isoToday = today.toISOString().slice(0, 10);
       searchDateInput.value = isoToday;
 
-      searchDateInput.addEventListener("change", () => {
-        const d = searchDateInput.value;
-        if (!d) return;
-        loadSheetData(d);
-      });
+searchDateInput.addEventListener("change", () => {
+  const d = searchDateInput.value;
+  if (!d) return;
+
+  // ✅ Hard block anything outside the latest 3 dates
+  if (allowedDates.length && !allowedDates.includes(d)) {
+    const fallback = allowedDates[allowedDates.length - 1];
+    searchDateInput.value = fallback;
+    showToast("Only latest 3 days available");
+    renderForDate(fallback);
+    return;
+  }
+
+  loadSheetData(d);
+});
+
     }
 
     /* ========== SEARCH BY USERNAME + DATE ========== */

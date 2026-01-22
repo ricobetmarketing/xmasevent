@@ -988,8 +988,12 @@ const SHEET_URL =
     const searchResult = document.getElementById("searchResult");
     const searchDateInput = document.getElementById("searchDate");
 
-    let allRows = [];
-    let currentLeaderboardDate = null;
+ let allRows = [];
+let currentLeaderboardDate = null;
+
+let allowedDates = [];     // latest 3 unique dates from sheet
+let minAllowedDate = "";   // earliest allowed (ISO)
+
 
     function flagInner(flagUrl) {
       if (flagUrl) {
@@ -1195,6 +1199,16 @@ const SHEET_URL =
           const uniqueDates = Array.from(
             new Set(allRows.map((r) => r.date))
           ).sort();
+          // ✅ Only allow latest 3 dates (from sheet)
+allowedDates = uniqueDates.slice(-3);
+minAllowedDate = allowedDates[0] || "";
+
+// lock date picker range (grey out earlier dates in native picker)
+if (searchDateInput && minAllowedDate) {
+  searchDateInput.min = minAllowedDate;
+  searchDateInput.max = allowedDates[allowedDates.length - 1];
+}
+
           const fromPicker = (searchDateInput && searchDateInput.value) || "";
           let target =
             preferredDate || fromPicker || uniqueDates[uniqueDates.length - 1];
@@ -1220,11 +1234,22 @@ const SHEET_URL =
       const isoToday = today.toISOString().slice(0, 10);
       searchDateInput.value = isoToday;
 
-      searchDateInput.addEventListener("change", () => {
-        const d = searchDateInput.value;
-        if (!d) return;
-        loadSheetData(d);
-      });
+searchDateInput.addEventListener("change", () => {
+  const d = searchDateInput.value;
+  if (!d) return;
+
+  // ✅ Hard block anything outside the latest 3 dates
+  if (allowedDates.length && !allowedDates.includes(d)) {
+    const fallback = allowedDates[allowedDates.length - 1];
+    searchDateInput.value = fallback;
+    showToast("Only latest 3 days available");
+    renderForDate(fallback);
+    return;
+  }
+
+  loadSheetData(d);
+});
+
     }
 
     /* ========== SEARCH BY USERNAME + DATE ========== */

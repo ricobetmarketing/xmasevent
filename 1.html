@@ -715,6 +715,67 @@
       font-size: 12px;
     }
 
+
+    /* EVENT ENDED POPUP */
+    .event-ended-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 45;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 16px;
+    }
+
+    .event-ended-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .event-ended-inner {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 0 0, rgba(248,113,113,0.18), transparent 55%),
+        #020617;
+      border: 1px solid rgba(248,113,113,0.65);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+      padding: 18px 18px 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .event-ended-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #fecaca;
+    }
+
+    .event-ended-message {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e5e7eb;
+      margin-bottom: 14px;
+    }
+
+    .event-ended-close {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.9);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      background: #020617;
+      color: #e5e7eb;
+    }
+
     /* TOAST */
     .toast {
       position: fixed;
@@ -854,9 +915,52 @@
     </div>
   </div>
 
+  <!-- EVENT ENDED POPUP -->
+  <div class="event-ended-modal" id="eventEndedModal">
+    <div class="event-ended-inner">
+      <div class="event-ended-title" data-i18n="eventEndedTitle">Evento encerrado</div>
+      <div class="event-ended-message" data-i18n="eventEndedMessage">
+        Este evento já terminou. Obrigado pela sua participação!
+      </div>
+      <button class="event-ended-close" id="eventEndedCloseBtn" data-i18n="eventEndedClose">Fechar</button>
+    </div>
+  </div>
+
+
   <div id="toast" class="toast">Done!</div>
 
   <script>
+
+
+    /* ========== EVENT ENDED POPUP (AFTER 14:00 GMT+8) ========== */
+    const eventEndedModal = document.getElementById("eventEndedModal");
+    const eventEndedCloseBtn = document.getElementById("eventEndedCloseBtn");
+
+    function isAfterEventEndGmt8() {
+      const nowUtcMs = Date.now();
+      const gmt8Now = new Date(nowUtcMs + 8 * 60 * 60 * 1000);
+      const hour = gmt8Now.getUTCHours();
+      const minute = gmt8Now.getUTCMinutes();
+      return hour > 14 || (hour === 14 && minute >= 0);
+    }
+
+    function showEventEndedPopupIfNeeded() {
+      if (eventEndedModal && isAfterEventEndGmt8()) {
+        eventEndedModal.classList.add("show");
+      }
+    }
+
+    if (eventEndedCloseBtn && eventEndedModal) {
+      eventEndedCloseBtn.addEventListener("click", () => {
+        eventEndedModal.classList.remove("show");
+      });
+    }
+
+    if (eventEndedModal) {
+      eventEndedModal.addEventListener("click", (e) => {
+        if (e.target === eventEndedModal) eventEndedModal.classList.remove("show");
+      });
+    }
 
 
     /* ========== CONFIG FOR GOOGLE SHEET ========== */
@@ -887,6 +991,67 @@ const SHEET_URL =
       if (lang === "pt") bannerImg.src = BANNER_BR;
       else if (lang === "es") bannerImg.src = BANNER_MX;
       else bannerImg.src = BANNER_EN;
+    }
+
+
+    /* EVENT ENDED POPUP */
+    .event-ended-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15,23,42,0.82);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 45;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      padding: 16px;
+    }
+
+    .event-ended-modal.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .event-ended-inner {
+      width: 100%;
+      max-width: 420px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 0 0, rgba(248,113,113,0.18), transparent 55%),
+        #020617;
+      border: 1px solid rgba(248,113,113,0.65);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.9);
+      padding: 18px 18px 16px;
+      text-align: center;
+      position: relative;
+    }
+
+    .event-ended-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      color: #fecaca;
+    }
+
+    .event-ended-message {
+      font-size: 13px;
+      line-height: 1.45;
+      color: #e5e7eb;
+      margin-bottom: 14px;
+    }
+
+    .event-ended-close {
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.9);
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      background: #020617;
+      color: #e5e7eb;
     }
 
     /* TOAST */
@@ -1414,6 +1579,9 @@ searchDateInput.addEventListener("change", () => {
       en: {
         countdownLabel1: "Next rewards payout in",
         countdownMeta1: "Countdown timer based on UTC-6",
+        eventEndedTitle: "Event ended",
+        eventEndedMessage: "This event has ended. Thank you for participating!",
+        eventEndedClose: "Close",
         lbTopLabel: "Results update in",
         searchBtn: "Find",
         noUserFound: "No username found for <strong>{user}</strong> on <strong>{date}</strong> in the leaderboard yet.",
@@ -1573,6 +1741,9 @@ searchDateInput.addEventListener("change", () => {
         countdownLabel1: "Próximo pagamento de prêmios em",
         noUserFound: "Nenhum usuário encontrado para <strong>{user}</strong> em <strong>{date}</strong> no ranking ainda.",
         countdownMeta1: "Cronômetro baseado em UTC-6",
+        eventEndedTitle: "Evento encerrado",
+        eventEndedMessage: "Este evento já terminou. Obrigado pela sua participação!",
+        eventEndedClose: "Fechar",
         lbTopLabel: "Atualização dos resultados em",
         searchBtn: "Procurar",
         searchPlaceholder: "Busque seu usuário…",
@@ -1730,6 +1901,9 @@ searchDateInput.addEventListener("change", () => {
         countdownLabel1: "Próximo pago de premios en",
         noUserFound: "No se encontró el usuario <strong>{user}</strong> en <strong>{date}</strong> en la tabla de posiciones.",
         countdownMeta1: "Contador basado en UTC-6",
+        eventEndedTitle: "Evento finalizado",
+        eventEndedMessage: "Este evento ya terminó. ¡Gracias por participar!",
+        eventEndedClose: "Cerrar",
         lbTopLabel: "Actualización de resultados en",
         searchBtn: "Buscar",
         searchPlaceholder: "Busca tu usuario…",
@@ -1977,6 +2151,7 @@ searchDateInput.addEventListener("change", () => {
     }
 
     detectLanguageAndApply();
+    showEventEndedPopupIfNeeded();
     loadSheetData();
   </script>
 </body>
